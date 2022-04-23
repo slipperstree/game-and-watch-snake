@@ -9,25 +9,27 @@
 
 // 各种字符串定义，可自由修改
 // 屏幕较小的话要改短一些,大屏也不要太长,预留的缓冲区只有128字节,超出的话会发生未知问题
-#if define UI_LANG_EN
-    u8* STR_PRESS_ANY_KEY_EN             = (u8*)"Press Any Key..";
-    u8* STR_DEMO_MENU_EN                 = (u8*)"壹Sound 貳Speed 叁Back";
-    u8* STR_GAME_MENU_EN                 = (u8*)"壹Left 貳Foward 叁Right";
-    u8* STR_GAMEOVER_GAMEOVER_EN         = (u8*)"Game Over";
-    u8* STR_GAMEOVER_NEWRECORD_EN        = (u8*)"New Record";
-    u8* STR_GAMEOVER_HSCORE_EN           = (u8*)"Record";
-    u8* STR_GAMEOVER_SCORE_EN            = (u8*)"Score:";
+#ifdef UI_LANG_EN
+    u8* STR_PRESS_ANY_KEY             = (u8*)"Press Any Key..";
+    u8* STR_DEMO_MENU                 = (u8*)"壹 Spd 貳 Snd 叁 Bk";
+    u8* STR_GAME_MENU                 = (u8*)"壹 Lft 貳 Fwd 叁 Rgt";
+    u8* STR_DEMO_MENU_SOUND           = (u8*)"貳 Snd";
+    u8* STR_GAMEOVER_GAMEOVER         = (u8*)"Game Over";
+    u8* STR_GAMEOVER_NEWRECORD        = (u8*)"New Record";
+    u8* STR_GAMEOVER_HSCORE           = (u8*)"Max  :";
+    u8* STR_GAMEOVER_SCORE            = (u8*)"Score:";
 #endif
-#if define UI_LANG_CN
-    u8* STR_PRESS_ANY_KEY_CN             = (u8*)"  按任意键继续..";
-    u8* STR_DEMO_MENU_CN                 = (u8*)"壹速 貳声音 叁返";  //壹貳叁代表按钮①②③图标
-    u8* STR_GAME_MENU_CN                 = (u8*)"壹左 貳声音 叁右";  //壹貳叁代表按钮①②③图标
-    u8* STR_GAMEOVER_GAMEOVER_CN         = (u8*)"游戏结束";
-    u8* STR_GAMEOVER_NEWRECORD_CN        = (u8*)"恭喜,刷新记录!";
-    u8* STR_GAMEOVER_HSCORE_CN           = (u8*)"记录:";
-    u8* STR_GAMEOVER_SCORE_CN            = (u8*)"得分:";
+#ifdef UI_LANG_CN
+    u8* STR_PRESS_ANY_KEY             = (u8*)"  按任意键继续..";
+    u8* STR_DEMO_MENU                 = (u8*)"壹速度 貳声音 叁返回";  //壹貳叁代表按钮①②③图标
+    u8* STR_GAME_MENU                 = (u8*)"壹左转 貳声音 叁右转";
+    u8* STR_DEMO_MENU_SOUND           = (u8*)"貳声音";
+    u8* STR_GAMEOVER_GAMEOVER         = (u8*)"游戏结束";
+    u8* STR_GAMEOVER_NEWRECORD        = (u8*)"恭喜,刷新记录!";
+    u8* STR_GAMEOVER_HSCORE           = (u8*)"记录:";
+    u8* STR_GAMEOVER_SCORE            = (u8*)"得分:";
 #endif
-?
+
 u8* STR_GAME_INFO                        = (u8*)"Snake on Game & Watch";
 
 #define  TITLE_Y         15
@@ -460,47 +462,41 @@ void DISP_drawWelcome(u8 isStartUp){
         return;
     #endif
 
-    #ifdef UI_LANG_EN
-        showStringCenter(20, "Snake+", &FONT32, 0);
-        // showStringCenterShadow(20, 5, 5, "Snake+", &FONT32, 0); //暂时没有实现
-        showStringCenter(60, "2021 C.L", &FONT16, 0);
-    #endif
-    #ifdef UI_LANG_CN
-        // 标题 贪吃蛇
-        titleStartX = (SCREEN_W - FONTHZ_TITLE64.fontWidth * 4) / 2;
-        titleY = SCREEN_H/8;
-        showChar(titleStartX, titleY, "贪", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE1);
-        showChar(titleStartX + FONTHZ_TITLE64.fontWidth + FONTHZ_TITLE64.fontWidth/2, titleY, "吃", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE1);
-        showChar(titleStartX + FONTHZ_TITLE64.fontWidth*3, titleY, "蛇", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE2);
+    // 标题 贪吃蛇
+    titleStartX = (SCREEN_W - FONTHZ_TITLE64.fontWidth * 4) / 2;
+    titleY = SCREEN_H/8;
+    showChar(titleStartX, titleY, "贪", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE1);
+    showChar(titleStartX + FONTHZ_TITLE64.fontWidth + FONTHZ_TITLE64.fontWidth/2, titleY, "吃", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE1);
+    showChar(titleStartX + FONTHZ_TITLE64.fontWidth*3, titleY, "蛇", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE2);
 
-        devScreenON();
+    devScreenON();
 
-        // 学电LOGO
-        logoX = (SCREEN_W - FONTHZ_XD_LOGO40.fontWidth) / 2;
-        logoY = titleY + FONTHZ_TITLE64.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2;
-        if (isStartUp)
-        {
-            My_delay_ms(1000);
-            // 学电LOGO缓缓出现的动画效果
-            while(1){
-                r+=10;
-                if (r>=256) break;
-                showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toRGB565(r, 0, 0), COLOR_BG);
-            }
-            // 出现后等待一会儿
-            My_delay_ms(1000);
-        } else {
-            // 非上电画面，快速显示
-            // 学电LOGO缓缓出现的动画效果
-            while(r<255){
-                r+=20;
-                if (r>=256) r = 255;
-                showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toRGB565(r, 0, 0), COLOR_BG);
-            }
-            // 出现后等待一会儿
-            My_delay_ms(500);
+    // LOGO
+    logoX = (SCREEN_W - FONTHZ_XD_LOGO40.fontWidth) / 2;
+    logoY = titleY + FONTHZ_TITLE64.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2;
+    if (isStartUp)
+    {
+        My_delay_ms(1000);
+        // 学电LOGO缓缓出现的动画效果
+        while(1){
+            r+=10;
+            if (r>=256) break;
+            showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toRGB565(r, 0, 0), COLOR_BG);
         }
-    #endif
+        // 出现后等待一会儿
+        My_delay_ms(1000);
+    } else {
+        // 非上电画面，快速显示
+        // 学电LOGO缓缓出现的动画效果
+        while(r<255){
+            r+=20;
+            if (r>=256) r = 255;
+            showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toRGB565(r, 0, 0), COLOR_BG);
+        }
+        // 出现后等待一会儿
+        My_delay_ms(500);
+    }
+    
 }
 
 // ##### 首页 定期被调用
@@ -509,30 +505,22 @@ void DISP_flashWelcome(u8 flashOnOff){
 
     u8 tmp=0;
 
-    #ifdef UI_LANG_EN
-        showStringCenter(80, STR_PRESS_ANY_KEY_EN, &FONT32, flashOnOff);
-
-        // 变幻颜色
-        // showStringCenter(60, "2021 C.L", &FONT16, 0);
+    #if ISDEBUG
+    sprintf(buff, "  DISP_flashWelcome 1: call showStringCenter(str=%s pStr=%ld)\r\n", STR_PRESS_ANY_KEY_CN, &STR_PRESS_ANY_KEY); LOG(buff);
     #endif
-    #ifdef UI_LANG_CN
-        #if ISDEBUG
-        sprintf(buff, "  DISP_flashWelcome 1: call showStringCenter(str=%s pStr=%ld)\r\n", STR_PRESS_ANY_KEY_CN, &STR_PRESS_ANY_KEY_CN); LOG(buff);
-        #endif
-        
-        // 学电LOGO变幻颜色
-        logoX = (SCREEN_W - FONTHZ_XD_LOGO40.fontWidth) / 2;
-        logoY = SCREEN_H/8 + FONTHZ_TITLE64.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2;
-        showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, randRGB565(), COLOR_BG);
+    
+    // 学电LOGO变幻颜色
+    logoX = (SCREEN_W - FONTHZ_XD_LOGO40.fontWidth) / 2;
+    logoY = SCREEN_H/8 + FONTHZ_TITLE64.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2;
+    showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, randRGB565(), COLOR_BG);
 
-        // 闪烁文字
-        showStringCenter(logoY + FONTHZ_XD_LOGO40.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2, STR_PRESS_ANY_KEY_CN, &FONTHZ32, flashOnOff);
+    // 闪烁文字
+    showStringCenter(logoY + FONTHZ_XD_LOGO40.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2, STR_PRESS_ANY_KEY, &FONTHZ32, flashOnOff);
 
-        // 标题 贪吃蛇 变幻颜色
-        // showChar(10, 20, "贪", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
-        // showChar(50, 20, "吃", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
-        // showChar(90, 20, "蛇", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
-    #endif
+    // 标题 贪吃蛇 变幻颜色
+    // showChar(10, 20, "贪", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
+    // showChar(50, 20, "吃", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
+    // showChar(90, 20, "蛇", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
 }
 
 // ##### Demo页 初始化时被调用一次
@@ -560,31 +548,21 @@ void DISP_drawDemo(u8 soundOnOff){
     devShowString(SCREEN_W - FRAME_THICKNESS - calcStringWidth(STR_GAME_INFO, &FONT20) - 5, topInfoY, STR_GAME_INFO, &FONT20, COLOR_BG, COLOR_FO);
 
     // 游戏区域中央显示 演示模式 （显示区域需要设置为障碍物不让蛇通过）
-    #ifdef UI_LANG_EN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MODE_EN, &FONT8, flashOnOff);
-    #endif
-    #ifdef UI_LANG_CN
-        showChar(SNAKE_DEMO_TITLE_1_X * 12  + gameArea_X_offset, 
-                 SNAKE_DEMO_TITLE_1_Y * 12 + gameArea_Y_offset, 
-                 FONT_HZ_DEMO_MODE_YAN, &FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_R, COLOR_BG );
-        showChar(SNAKE_DEMO_TITLE_2_X * 12  + gameArea_X_offset, 
-                 SNAKE_DEMO_TITLE_2_Y * 12 + gameArea_Y_offset, 
-                 FONT_HZ_DEMO_MODE_SHI1,&FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_G, COLOR_BG );
-        showChar(SNAKE_DEMO_TITLE_3_X * 12  + gameArea_X_offset, 
-                 SNAKE_DEMO_TITLE_3_Y * 12 + gameArea_Y_offset, 
-                 FONT_HZ_DEMO_MODE_MO,  &FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_B, COLOR_BG );
-        showChar(SNAKE_DEMO_TITLE_4_X * 12  + gameArea_X_offset, 
-                 SNAKE_DEMO_TITLE_4_Y * 12 + gameArea_Y_offset, 
-                 FONT_HZ_DEMO_MODE_SHI2,&FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_Y, COLOR_BG );
-    #endif
+    showChar(SNAKE_DEMO_TITLE_1_X * 12  + gameArea_X_offset, 
+                SNAKE_DEMO_TITLE_1_Y * 12 + gameArea_Y_offset, 
+                FONT_HZ_DEMO_MODE_YAN, &FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_R, COLOR_BG );
+    showChar(SNAKE_DEMO_TITLE_2_X * 12  + gameArea_X_offset, 
+                SNAKE_DEMO_TITLE_2_Y * 12 + gameArea_Y_offset, 
+                FONT_HZ_DEMO_MODE_SHI1,&FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_G, COLOR_BG );
+    showChar(SNAKE_DEMO_TITLE_3_X * 12  + gameArea_X_offset, 
+                SNAKE_DEMO_TITLE_3_Y * 12 + gameArea_Y_offset, 
+                FONT_HZ_DEMO_MODE_MO,  &FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_B, COLOR_BG );
+    showChar(SNAKE_DEMO_TITLE_4_X * 12  + gameArea_X_offset, 
+                SNAKE_DEMO_TITLE_4_Y * 12 + gameArea_Y_offset, 
+                FONT_HZ_DEMO_MODE_SHI2,&FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_Y, COLOR_BG );
 
     // 底部信息
-    #ifdef UI_LANG_EN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU_EN, &FONT8, flashOnOff);
-    #endif
-    #ifdef UI_LANG_CN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU_CN, &FONTHZ32, 0);
-    #endif
+    showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU, &FONTHZ32, 0);
 
     // 绘制声音状态
     DISP_drawSound(soundOnOff);
@@ -650,12 +628,7 @@ void DISP_drawGame(u8 soundOnOff){
     devShowString(SCREEN_W - FRAME_THICKNESS - calcStringWidth(STR_GAME_INFO, &FONT20) - 5, topInfoY, STR_GAME_INFO, &FONT20, COLOR_BG, COLOR_FO);
 
     // 底部信息
-    #ifdef UI_LANG_EN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU_EN, &FONT8, flashOnOff);
-    #endif
-    #ifdef UI_LANG_CN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU_CN, &FONTHZ32, 0);
-    #endif
+    showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU, &FONTHZ32, 0);
 
     // 绘制声音状态
     DISP_drawSound(soundOnOff);
@@ -681,53 +654,37 @@ void DISP_drawGameOver(u16 score, u16 hiScore){
     u8 buff1[16];
     clearScreen();
 
-    #ifdef UI_LANG_EN
-        // 英文界面
-        showStringCenter(5, "________________", &FONT8, 0);
-        showStringCenter(TITLE_Y, STR_GAMEOVER_GAMEOVER_EN, &FONT16, 0);
-        sprintf(buff1, "%s %d", STR_GAMEOVER_SCORE_EN, score);
-        showStringCenter(SCROE_Y, buff, &FONT16, 0);
-        showStringCenter(60, "________________", &FONT8, 0);
-    #endif
-    #ifdef UI_LANG_CN
+    //showStringCenter(5, "__________", &FONT32, 0);
 
-        //showStringCenter(5, "__________", &FONT32, 0);
+    // 标题，如果超过最高分，显示 刷新记录 否则 显示游戏结束
+    if (score > hiScore)
+    {
+        showStringCenter(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONTHZ32, 0);
+    } else {
+        showStringCenter(TITLE_Y, STR_GAMEOVER_GAMEOVER, &FONTHZ32, 0);
+    }
 
-        // 标题，如果超过最高分，显示 刷新记录 否则 显示游戏结束
-        if (score > hiScore)
-        {
-            showStringCenter(TITLE_Y, STR_GAMEOVER_NEWRECORD_CN, &FONTHZ32, 0);
-        } else {
-            showStringCenter(TITLE_Y, STR_GAMEOVER_GAMEOVER_CN, &FONTHZ32, 0);
-        }
+    // 得分
+    sprintf(buff1, "%s %d", STR_GAMEOVER_SCORE, score);
+    showStringCenter(SCROE_Y, buff1, &FONTHZ32, 0);
+    // 记录
+    sprintf(buff1, "%s %d", STR_GAMEOVER_HSCORE, hiScore);
+    showStringCenter(HSCROE_Y, buff1, &FONTHZ32, 0);
 
-        // 得分
-        sprintf(buff1, "%s %d", STR_GAMEOVER_SCORE_CN, score);
-        showStringCenter(SCROE_Y, buff1, &FONTHZ32, 0);
-        // 记录
-        sprintf(buff1, "%s %d", STR_GAMEOVER_HSCORE_CN, hiScore);
-        showStringCenter(HSCROE_Y, buff1, &FONTHZ32, 0);
-
-        showStringCenter(150, "__________", &FONT32, 0);
-    #endif
+    showStringCenter(150, "__________", &FONT32, 0);
 }
 
 // ##### GameOver页 定期被调用
 void DISP_flashGameOver(u8 flashOnOff, u8 isNewRecord){
 
-    #ifdef UI_LANG_EN
-        showStringCenter(70, STR_PRESS_ANY_KEY_EN, &FONTHZ32, flashOnOff);
-    #endif
-    #ifdef UI_LANG_CN
-        if (isNewRecord)
-        {
-            // 刷新记录动态效果
-            showStringCenterColor(TITLE_Y, STR_GAMEOVER_NEWRECORD_CN, &FONTHZ32, COLOR_BG, randRGB565(), 0);
-        }
+    if (isNewRecord)
+    {
+        // 刷新记录动态效果
+        showStringCenterColor(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONTHZ32, COLOR_BG, randRGB565(), 0);
+    }
 
-        // 底部闪烁文字 按任意键继续...
-        showStringCenter(190, STR_PRESS_ANY_KEY_CN, &FONTHZ32, flashOnOff);
-    #endif
+    // 底部闪烁文字 按任意键继续...
+    showStringCenter(190, STR_PRESS_ANY_KEY, &FONTHZ32, flashOnOff);
 }
 
 // 绘制框架
@@ -760,12 +717,7 @@ void DISP_drawFrame() {
 void DISP_drawSound(u8 soundOnOff) {
     if (soundOnOff)
     {
-        #ifdef UI_LANG_EN
-            showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU_EN, &FONT8, flashOnOff);
-        #endif
-        #ifdef UI_LANG_CN
-            showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, "貳声音", &FONTHZ32, 0);
-        #endif
+        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU_SOUND, &FONTHZ32, 0);
     } else {
         // 绘制静音        
         devDrawLine(SCREEN_W/2-13, SCREEN_H-34, SCREEN_W/2-17+54, SCREEN_H-7, 3, COLOR_RED);
