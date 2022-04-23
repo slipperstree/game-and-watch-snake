@@ -30,8 +30,13 @@
     u8* STR_GAMEOVER_SCORE            = (u8*)"得分:";
 #endif
 
-u8* STR_GAME_INFO                        = (u8*)"Snake on Game & Watch";
+u8* STR_GAME_INFO                     = (u8*)"Snake & Watch";
 
+// Game page
+#define  TOP_INFO_OFFSET_Y       8
+#define  TOP_INFO_FOOD_OFFSET_Y  4
+
+// Gameover page
 #define  TITLE_Y         15
 #define  SCROE_Y         60
 #define HSCROE_Y        100
@@ -462,36 +467,53 @@ void DISP_drawWelcome(u8 isStartUp){
         return;
     #endif
 
-    // 标题 贪吃蛇
-    titleStartX = (SCREEN_W - FONTHZ_TITLE64.fontWidth * 4) / 2;
-    titleY = SCREEN_H/8;
-    showChar(titleStartX, titleY, "贪", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE1);
-    showChar(titleStartX + FONTHZ_TITLE64.fontWidth + FONTHZ_TITLE64.fontWidth/2, titleY, "吃", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE1);
-    showChar(titleStartX + FONTHZ_TITLE64.fontWidth*3, titleY, "蛇", &FONTHZ_TITLE64, COLOR_BG, COLOR_TITLE2);
+    // 标题
+    #ifdef UI_LANG_CN
+        // 贪吃蛇
+        titleStartX = (SCREEN_W - FONT_TITLE.fontWidth * 4) / 2;
+        titleY = SCREEN_H/8;
+        showChar(titleStartX, titleY, "贪", &FONT_TITLE, COLOR_BG, COLOR_TITLE1);
+        showChar(titleStartX + FONT_TITLE.fontWidth + FONT_TITLE.fontWidth/2, titleY, "吃", &FONT_TITLE, COLOR_BG, COLOR_TITLE1);
+        showChar(titleStartX + FONT_TITLE.fontWidth*3, titleY, "蛇", &FONT_TITLE, COLOR_BG, COLOR_TITLE2);
+    #endif
+    #ifdef UI_LANG_EN
+        // SNAKE
+        titleStartX = (SCREEN_W - FONT_TITLE.fontWidth * 6) / 2;
+        titleY = SCREEN_H/8;
+        showChar(titleStartX, titleY, "贪", &FONT_TITLE, COLOR_BG, COLOR_TITLE1);
+        showChar(titleStartX+=(FONT_TITLE.fontWidth + FONT_TITLE.fontWidth/2), titleY, "吃", &FONT_TITLE, COLOR_BG, COLOR_TITLE2);
+        showChar(titleStartX+=(FONT_TITLE.fontWidth + FONT_TITLE.fontWidth/2), titleY, "蛇", &FONT_TITLE, COLOR_BG, COLOR_TITLE1);
+        showChar(titleStartX+=(FONT_TITLE.fontWidth + FONT_TITLE.fontWidth/2), titleY, "标", &FONT_TITLE, COLOR_BG, COLOR_TITLE2);
+        showChar(titleStartX+=(FONT_TITLE.fontWidth + FONT_TITLE.fontWidth/2), titleY, "题", &FONT_TITLE, COLOR_BG, COLOR_TITLE1);
+    #endif
 
     devScreenON();
 
     // LOGO
-    logoX = (SCREEN_W - FONTHZ_XD_LOGO40.fontWidth) / 2;
-    logoY = titleY + FONTHZ_TITLE64.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2;
+    logoX = (SCREEN_W - FONT_LOGO70.fontWidth) / 2;
+    logoY = titleY + FONT_TITLE.fontHeight + FONT_LOGO70.fontHeight / 2;
     if (isStartUp)
     {
         My_delay_ms(1000);
-        // 学电LOGO缓缓出现的动画效果
+        // S&W LOGO缓缓出现的动画效果
         while(1){
-            r+=10;
-            if (r>=256) break;
-            showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toRGB565(r, 0, 0), COLOR_BG);
+            r+=5;
+            if (r>=256) {
+                showChar(logoX, logoY, FONT__LOGO, &FONT_LOGO70, RGB888toRGB565(255, 0, 0), COLOR_BG);
+                break;
+            } 
+            showChar(logoX, logoY, FONT__LOGO, &FONT_LOGO70, RGB888toRGB565(r, 0, 0), COLOR_BG);
+            My_delay_ms(1);
         }
         // 出现后等待一会儿
         My_delay_ms(1000);
     } else {
         // 非上电画面，快速显示
-        // 学电LOGO缓缓出现的动画效果
+        // S&W LOGO缓缓出现的动画效果
         while(r<255){
             r+=20;
             if (r>=256) r = 255;
-            showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toRGB565(r, 0, 0), COLOR_BG);
+            showChar(logoX, logoY, FONT__LOGO, &FONT_LOGO70, RGB888toRGB565(r, 0, 0), COLOR_BG);
         }
         // 出现后等待一会儿
         My_delay_ms(500);
@@ -506,21 +528,21 @@ void DISP_flashWelcome(u8 flashOnOff){
     u8 tmp=0;
 
     #if ISDEBUG
-    sprintf(buff, "  DISP_flashWelcome 1: call showStringCenter(str=%s pStr=%ld)\r\n", STR_PRESS_ANY_KEY_CN, &STR_PRESS_ANY_KEY); LOG(buff);
+    sprintf(buff, "  DISP_flashWelcome 1: call showStringCenter(str=%s pStr=%ld)\r\n", STR_PRESS_ANY_KEY, &STR_PRESS_ANY_KEY); LOG(buff);
     #endif
     
-    // 学电LOGO变幻颜色
-    logoX = (SCREEN_W - FONTHZ_XD_LOGO40.fontWidth) / 2;
-    logoY = SCREEN_H/8 + FONTHZ_TITLE64.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2;
-    showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, randRGB565(), COLOR_BG);
+    // S&W LOGO变幻颜色
+    logoX = (SCREEN_W - FONT_LOGO70.fontWidth) / 2;
+    logoY = SCREEN_H/8 + FONT_TITLE.fontHeight + FONT_LOGO70.fontHeight / 2;
+    //showChar(logoX, logoY, FONT__LOGO, &FONT_LOGO70, randRGB565(), COLOR_BG);
 
     // 闪烁文字
-    showStringCenter(logoY + FONTHZ_XD_LOGO40.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2, STR_PRESS_ANY_KEY, &FONTHZ32, flashOnOff);
+    showStringCenter(logoY + FONT_LOGO70.fontHeight + 20, STR_PRESS_ANY_KEY, &FONT32, flashOnOff);
 
     // 标题 贪吃蛇 变幻颜色
-    // showChar(10, 20, "贪", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
-    // showChar(50, 20, "吃", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
-    // showChar(90, 20, "蛇", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
+    // showChar(10, 20, "贪", &FONT_TITLE, COLOR_BG, randRGB565());
+    // showChar(50, 20, "吃", &FONT_TITLE, COLOR_BG, randRGB565());
+    // showChar(90, 20, "蛇", &FONT_TITLE, COLOR_BG, randRGB565());
 }
 
 // ##### Demo页 初始化时被调用一次
@@ -538,31 +560,31 @@ void DISP_drawDemo(u8 soundOnOff){
 
     // 注意，这句计算必须放在DISP_drawFrame的后面。否则第一次计算时还未被设置正确的数值，为默认值1。
     // 误以为1是正确的值调整后面的位置第一次是对的，第二次就全错了。
-    topInfoY =FRAME_THICKNESS + 5;
+    topInfoY =FRAME_THICKNESS + TOP_INFO_OFFSET_Y;
 
     // 顶部信息
     // 食物 = 0  (当前吃了多少个)
-    showChar(FRAME_THICKNESS + 10, topInfoY+3, FONT_SNAKE_BLOCK_APPLE, &BLOCK_VIEW_FONT, COLOR_BG, COLOR_FO);
-    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, " =  0", &FONT20, COLOR_BG, COLOR_FO);
+    showChar(FRAME_THICKNESS + 10, topInfoY+TOP_INFO_FOOD_OFFSET_Y, FONT_SNAKE_BLOCK_APPLE, &BLOCK_VIEW_FONT, COLOR_BG, COLOR_FO);
+    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, " =  0", &FONT_ASC20, COLOR_BG, COLOR_FO);
     // 居右显示文字
-    devShowString(SCREEN_W - FRAME_THICKNESS - calcStringWidth(STR_GAME_INFO, &FONT20) - 5, topInfoY, STR_GAME_INFO, &FONT20, COLOR_BG, COLOR_FO);
+    devShowString(SCREEN_W - FRAME_THICKNESS - calcStringWidth(STR_GAME_INFO, &FONT_ASC20) - 5, topInfoY, STR_GAME_INFO, &FONT_ASC20, COLOR_BG, COLOR_FO);
 
     // 游戏区域中央显示 演示模式 （显示区域需要设置为障碍物不让蛇通过）
     showChar(SNAKE_DEMO_TITLE_1_X * 12  + gameArea_X_offset, 
                 SNAKE_DEMO_TITLE_1_Y * 12 + gameArea_Y_offset, 
-                FONT_HZ_DEMO_MODE_YAN, &FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_R, COLOR_BG );
+                FONT_DEMO_MODE_YAN, &FONT_DEMO_MOEDE24, COLOR_WINLOGO_R, COLOR_BG );
     showChar(SNAKE_DEMO_TITLE_2_X * 12  + gameArea_X_offset, 
                 SNAKE_DEMO_TITLE_2_Y * 12 + gameArea_Y_offset, 
-                FONT_HZ_DEMO_MODE_SHI1,&FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_G, COLOR_BG );
+                FONT_DEMO_MODE_SHI1,&FONT_DEMO_MOEDE24, COLOR_WINLOGO_G, COLOR_BG );
     showChar(SNAKE_DEMO_TITLE_3_X * 12  + gameArea_X_offset, 
                 SNAKE_DEMO_TITLE_3_Y * 12 + gameArea_Y_offset, 
-                FONT_HZ_DEMO_MODE_MO,  &FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_B, COLOR_BG );
+                FONT_DEMO_MODE_MO,  &FONT_DEMO_MOEDE24, COLOR_WINLOGO_B, COLOR_BG );
     showChar(SNAKE_DEMO_TITLE_4_X * 12  + gameArea_X_offset, 
                 SNAKE_DEMO_TITLE_4_Y * 12 + gameArea_Y_offset, 
-                FONT_HZ_DEMO_MODE_SHI2,&FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_Y, COLOR_BG );
+                FONT_DEMO_MODE_SHI2,&FONT_DEMO_MOEDE24, COLOR_WINLOGO_Y, COLOR_BG );
 
     // 底部信息
-    showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU, &FONTHZ32, 0);
+    showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU, &FONT32, 0);
 
     // 绘制声音状态
     DISP_drawSound(soundOnOff);
@@ -576,16 +598,16 @@ void DISP_drawDemo(u8 soundOnOff){
 
 // ##### Demo页 吃到食物时被调用一次，更新画面上的分数
 void DISP_updateDemoScore(u16 maxDemoScore, u16 nowDemoScore){
-    u8 topInfoY = FRAME_THICKNESS + 5;
+    u8 topInfoY = FRAME_THICKNESS + TOP_INFO_OFFSET_Y;
 
     // 顶部信息栏更新分数
     sprintf(buff, " =%3u", nowDemoScore);
-    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, buff, &FONT20, COLOR_BG, COLOR_FO);
+    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, buff, &FONT_ASC20, COLOR_BG, COLOR_FO);
 }
 
 // ##### Demo页 死亡时被调用一次，可做一些显示处理，目前什么都没做
 void DISP_updateDemoGameover(u16 maxDemoScore, u16 avgDemoScore, u16 lastDemoScore){
-    //devShowString(0, SCREEN_H - FONT32.fontHeight, "                ", &FONT8, COLOR_BG, COLOR_FO);
+    //devShowString(0, SCREEN_H - FONT32.fontHeight, "                ", &FONT_ASC8, COLOR_BG, COLOR_FO);
     //sprintf(buff, "Max:%d Avg:%d", maxDemoScore, avgDemoScore, lastDemoScore);
     //devShowString(0, SCREEN_H - FONT32.fontHeight, buff, &FONT32, COLOR_BG, COLOR_FO);
 }
@@ -618,17 +640,17 @@ void DISP_drawGame(u8 soundOnOff){
 
     // 注意，这句计算必须放在DISP_drawFrame的后面。否则第一次计算时还未被设置正确的数值，为默认值1。
     // 误以为1是正确的值调整后面的位置第一次是对的，第二次就全错了。
-    topInfoY =FRAME_THICKNESS + 5;
+    topInfoY =FRAME_THICKNESS + TOP_INFO_OFFSET_Y;
 
     // 顶部信息
     // 食物 = 0  (当前吃了多少个)
-    showChar(FRAME_THICKNESS + 10, topInfoY+3, FONT_SNAKE_BLOCK_APPLE, &BLOCK_VIEW_FONT, COLOR_BG, COLOR_FO);
-    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, " =  0", &FONT20, COLOR_BG, COLOR_FO);
+    showChar(FRAME_THICKNESS + 10, topInfoY+TOP_INFO_FOOD_OFFSET_Y, FONT_SNAKE_BLOCK_APPLE, &BLOCK_VIEW_FONT, COLOR_BG, COLOR_FO);
+    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, " =  0", &FONT_ASC20, COLOR_BG, COLOR_FO);
     // 居右显示文字
-    devShowString(SCREEN_W - FRAME_THICKNESS - calcStringWidth(STR_GAME_INFO, &FONT20) - 5, topInfoY, STR_GAME_INFO, &FONT20, COLOR_BG, COLOR_FO);
+    devShowString(SCREEN_W - FRAME_THICKNESS - calcStringWidth(STR_GAME_INFO, &FONT_ASC20) - 5, topInfoY, STR_GAME_INFO, &FONT_ASC20, COLOR_BG, COLOR_FO);
 
     // 底部信息
-    showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU, &FONTHZ32, 0);
+    showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU, &FONT32, 0);
 
     // 绘制声音状态
     DISP_drawSound(soundOnOff);
@@ -642,11 +664,11 @@ void DISP_drawGame(u8 soundOnOff){
 
 // ##### Game页 吃到食物时被调用一次，更新画面上的分数
 void DISP_updateGameScore(u16 maxDemoScore, u16 nowDemoScore){
-    u8 topInfoY = FRAME_THICKNESS + 5;
+    u8 topInfoY = FRAME_THICKNESS + TOP_INFO_OFFSET_Y;
 
     // 顶部信息栏更新分数
     sprintf(buff, " =%3u", nowDemoScore);
-    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, buff, &FONT20, COLOR_BG, COLOR_FO);
+    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, buff, &FONT_ASC20, COLOR_BG, COLOR_FO);
 }
 
 // ##### GameOver页 初始化时被调用一次
@@ -659,17 +681,17 @@ void DISP_drawGameOver(u16 score, u16 hiScore){
     // 标题，如果超过最高分，显示 刷新记录 否则 显示游戏结束
     if (score > hiScore)
     {
-        showStringCenter(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONTHZ32, 0);
+        showStringCenter(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONT32, 0);
     } else {
-        showStringCenter(TITLE_Y, STR_GAMEOVER_GAMEOVER, &FONTHZ32, 0);
+        showStringCenter(TITLE_Y, STR_GAMEOVER_GAMEOVER, &FONT32, 0);
     }
 
     // 得分
     sprintf(buff1, "%s %d", STR_GAMEOVER_SCORE, score);
-    showStringCenter(SCROE_Y, buff1, &FONTHZ32, 0);
+    showStringCenter(SCROE_Y, buff1, &FONT32, 0);
     // 记录
     sprintf(buff1, "%s %d", STR_GAMEOVER_HSCORE, hiScore);
-    showStringCenter(HSCROE_Y, buff1, &FONTHZ32, 0);
+    showStringCenter(HSCROE_Y, buff1, &FONT32, 0);
 
     showStringCenter(150, "__________", &FONT32, 0);
 }
@@ -680,11 +702,11 @@ void DISP_flashGameOver(u8 flashOnOff, u8 isNewRecord){
     if (isNewRecord)
     {
         // 刷新记录动态效果
-        showStringCenterColor(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONTHZ32, COLOR_BG, randRGB565(), 0);
+        showStringCenterColor(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONT32, COLOR_BG, randRGB565(), 0);
     }
 
     // 底部闪烁文字 按任意键继续...
-    showStringCenter(190, STR_PRESS_ANY_KEY, &FONTHZ32, flashOnOff);
+    showStringCenter(190, STR_PRESS_ANY_KEY, &FONT32, flashOnOff);
 }
 
 // 绘制框架
@@ -717,7 +739,7 @@ void DISP_drawFrame() {
 void DISP_drawSound(u8 soundOnOff) {
     if (soundOnOff)
     {
-        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU_SOUND, &FONTHZ32, 0);
+        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU_SOUND, &FONT32, 0);
     } else {
         // 绘制静音        
         devDrawLine(SCREEN_W/2-13, SCREEN_H-34, SCREEN_W/2-17+54, SCREEN_H-7, 3, COLOR_RED);
@@ -739,7 +761,7 @@ void DISP_init(void){
     // clockH = clock >> 16;
     // clockL = clock & 0xFFFF;
     // sprintf(buff, "H:%u  L:%u", clockH, clockL);
-    // devShowString(0,0,buff,&FONTHZ32,COLOR_BLACK, COLOR_WHITE);
+    // devShowString(0,0,buff,&FONT32,COLOR_BLACK, COLOR_WHITE);
     // while (1);
     
 }
