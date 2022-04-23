@@ -9,7 +9,8 @@
 			"*.lua": "lua",
 			"common.h": "c",
 			"flash.h": "c",
-			"buttons.h": "c"
+			"buttons.h": "c",
+			"mymathutil.h": "c"
 		}
 	}
 }

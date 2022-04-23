@@ -71,6 +71,7 @@ Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
 Snake/Src/common.c \
 Snake/Src/font.c \
 Snake/Src/key.c \
+Snake/Src/myMathUtil.c \
 Snake/Src/embSnake.c
 
 # ASM sources

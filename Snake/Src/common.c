@@ -32,5 +32,5 @@ u8 My_strlen(char* x)
 
 u16 My_real_rand(){
 
-	// TODO: GW? return (u16)gba_rand();
+	return (u16)my_rand();
 }
