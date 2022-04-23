@@ -25,6 +25,7 @@ pBtnEventFunc btn5EventFunc;
 pBtnEventFunc btn6EventFunc;
 pBtnEventFunc btn7EventFunc;
 pBtnEventFunc btn8EventFunc;
+pBtnEventFunc btn9EventFunc;
 
 // 按键扫描的共通函数定义 （不要修改）
 void keyScanCommon(u8 btnUpDown, pBtnEventFunc callBackFunc, u8 btnIdx);
@@ -60,6 +61,9 @@ void KEY_keyscan(){
     #if KEY_CNT>7
         keyScanCommon(BTN8, btn8EventFunc, idx++);
     #endif
+    #if KEY_CNT>8
+        keyScanCommon(BTN9, btn9EventFunc, idx++);
+    #endif
 
 }
 
@@ -82,7 +86,8 @@ void KEY_init(  pBtnEventFunc btn1Func,
                 pBtnEventFunc btn5Func,
                 pBtnEventFunc btn6Func,
                 pBtnEventFunc btn7Func,
-                pBtnEventFunc btn8Func  ) {
+                pBtnEventFunc btn8Func,
+                pBtnEventFunc btn9Func  ) {
     u8 i = 0;
     for (i = 0; i < KEY_CNT; i++)
     {
@@ -94,6 +99,7 @@ void KEY_init(  pBtnEventFunc btn1Func,
 
     btn1EventFunc = btn1Func; btn2EventFunc = btn2Func; btn3EventFunc = btn3Func; btn4EventFunc = btn4Func;
     btn5EventFunc = btn5Func; btn6EventFunc = btn6Func; btn7EventFunc = btn7Func; btn8EventFunc = btn8Func;
+    btn9EventFunc = btn9Func;
     
 }
 

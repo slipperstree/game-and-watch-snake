@@ -74,9 +74,9 @@ void CTL_run(){
     
     if (nowMode == MODE_WELCOME_DEMO)
     {
-        flashSpeed = 20;
+        flashSpeed = 30;
     } else {
-        flashSpeed = 20;
+        flashSpeed = 30;
     }
 
     if (ttFlag > flashSpeed)
@@ -232,7 +232,7 @@ void doBtnCommon(u8 btnNo, u8 event_id){
                     setDemoSpeed(SPEED_DEMO_L);
                 }
                 break;
-            case KEY_TIME:
+            case KEY_PAUSE:
                 // Demo-∞¥º¸SELECT=«–ªª…˘“Ù
                 switchSound();
                 break;
@@ -265,7 +265,7 @@ void doBtnCommon(u8 btnNo, u8 event_id){
                 ttWalk = 0;
             }
 
-            if (btnNo == KEY_TIME) {
+            if (btnNo == KEY_PAUSE) {
                 // «–ªª…˘“Ù
                 switchSound();
             }
@@ -334,10 +334,14 @@ void eventKey6(u8 event_id){
 }
 
 void eventKey7(u8 event_id){
-    doBtnCommon(KEY_TIME, event_id);
+    doBtnCommon(KEY_GAME, event_id);
 }
 
 void eventKey8(u8 event_id){
+    doBtnCommon(KEY_TIME, event_id);
+}
+
+void eventKey9(u8 event_id){
     doBtnCommon(KEY_PAUSE, event_id);
 }
 
@@ -584,7 +588,7 @@ void CTL_init() {
 
     DISP_init();
     devSndInit();
-    KEY_init(eventKey1, eventKey2, eventKey3, eventKey4, eventKey5, eventKey6, eventKey7, eventKey8);
+    KEY_init(eventKey1, eventKey2, eventKey3, eventKey4, eventKey5, eventKey6, eventKey7, eventKey8, eventKey9);
     SNAKE_init(eventSnake);
     
     #if ISDEBUG

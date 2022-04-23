@@ -85,12 +85,12 @@ void devFillRectange(u16 x, u16 y, u16 width, u16 height, u16 color){
 
 // 关闭屏幕显示(跟函数devScreenON搭配使用，如无必要可不用实现留空即可，实现了更好，可以防止刷新画面的过程被用户看见)
 void devScreenOFF(){
-    lcd_backlight_off();
+    //lcd_backlight_off();
 }
 
 // 打开屏幕显示(跟函数devScreenOFF搭配使用，如无必要可不用实现留空即可，实现了更好，可以防止刷新画面的过程被用户看见)
 void devScreenON(){
-    lcd_backlight_on();
+    //lcd_backlight_on();
 }
 
 // =========================================================================================
@@ -227,7 +227,7 @@ void devPlaySound(Sound_Type soundType){
 // 进入主画面时会调用这个函数，如有需要请实现想要的效果(比如关闭LED)
 // 没有要做的留空即可
 void devEnterHomePage(){
-    lcd_backlight_off();
+    //lcd_backlight_off();
 }
 
 // 进入Demo画面时会调用这个函数，如有需要请实现想要的效果

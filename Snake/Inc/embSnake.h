@@ -17,7 +17,7 @@
 
 // 地图大小(非屏幕分辨率)
 #define SNAKE_SIZE_X  25
-#define SNAKE_SIZE_Y  14
+#define SNAKE_SIZE_Y  16
 // #define SNAKE_SIZE_X  19
 // #define SNAKE_SIZE_Y  7
 

@@ -17,7 +17,7 @@ void My_delay_ms(u16 n)
 	u16 x,y;
 	for(x=n;x>0;x--)
 	{
-		for(y=1000;y>0;y--);
+		for(y=1200;y>0;y--);
 	}
 }
 #pragma GCC pop_options

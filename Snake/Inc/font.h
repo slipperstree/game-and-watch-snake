@@ -28,8 +28,8 @@ typedef struct
 
 // 英文字体(包含所有ASCII) --------------------
 //#define SUPPORT_CHAR_SIZE_8
-//#define SUPPORT_CHAR_SIZE_12
-//#define SUPPORT_CHAR_SIZE_16
+#define SUPPORT_CHAR_SIZE_12
+#define SUPPORT_CHAR_SIZE_16
 #define SUPPORT_CHAR_SIZE_20
 #define SUPPORT_CHAR_SIZE_32
 
@@ -100,20 +100,20 @@ typedef struct
 // S&W LOGO两个字
 #ifdef SUPPORT_LOGO_20
   extern Font_Type FONT_LOGO20;
-  #ifndef FONT__LOGO
-  #define FONT__LOGO 0
+  #ifndef FONT_LOGO_IDX_0
+  #define FONT_LOGO_IDX_0 0
   #endif
 #endif
 #ifdef SUPPORT_LOGO_32
   extern Font_Type FONT_LOGO32;
-  #ifndef FONT__LOGO
-  #define FONT__LOGO 0
+  #ifndef FONT_LOGO_IDX_0
+  #define FONT_LOGO_IDX_0 0
   #endif
 #endif
 #ifdef SUPPORT_LOGO_70
   extern Font_Type FONT_LOGO70;
-  #ifndef FONT__LOGO
-  #define FONT__LOGO 0
+  #ifndef FONT_LOGO_IDX_0
+  #define FONT_LOGO_IDX_0 0
   #endif
 #endif
 #ifdef SUPPORT_DEMO_MODE_24

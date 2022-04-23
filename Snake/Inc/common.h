@@ -38,10 +38,9 @@ u16 My_real_rand();
     #define SPEED_DEMO_H    DEBUG_DEMO_SPEED_H      //DEMO速度快
     #define SPEED_DEMO_S    DEBUG_DEMO_SPEED_S      //DEMO速度超快
 #else
-    // 由于使用了V中断同步，这里的数值就是帧数，也就是多少帧前进一格，GBA硬件默认是60帧（59.x帧）1秒
     #define SPEED_DEFAULT    30      //初始速度
     #define SPEED_MAX         6      //最高速度
-    #define SPEED_INTERVAL    3      //每个等级速度相差的数值
+    #define SPEED_INTERVAL    2      //每个等级速度相差的数值
     #define SPEED_DEMO_L     30      //DEMO速度慢(初始)
     #define SPEED_DEMO_M     15      //DEMO速度中
     #define SPEED_DEMO_H      9      //DEMO速度快

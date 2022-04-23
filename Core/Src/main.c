@@ -153,7 +153,7 @@ int main(void)
 
     CTL_run();
     
-    HAL_Delay(30);
+    HAL_Delay(10);
     // i++;
     // if(i % 30 == 0) {
     //   if(color == 0xf800) {
