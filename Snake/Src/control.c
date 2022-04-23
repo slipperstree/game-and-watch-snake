@@ -232,7 +232,7 @@ void doBtnCommon(u8 btnNo, u8 event_id){
                     setDemoSpeed(SPEED_DEMO_L);
                 }
                 break;
-            case KEY_SELECT:
+            case KEY_TIME:
                 // Demo-∞¥º¸SELECT=«–ªª…˘“Ù
                 switchSound();
                 break;
@@ -265,7 +265,7 @@ void doBtnCommon(u8 btnNo, u8 event_id){
                 ttWalk = 0;
             }
 
-            if (btnNo == KEY_SELECT) {
+            if (btnNo == KEY_TIME) {
                 // «–ªª…˘“Ù
                 switchSound();
             }
@@ -334,11 +334,11 @@ void eventKey6(u8 event_id){
 }
 
 void eventKey7(u8 event_id){
-    doBtnCommon(KEY_SELECT, event_id);
+    doBtnCommon(KEY_TIME, event_id);
 }
 
 void eventKey8(u8 event_id){
-    doBtnCommon(KEY_START, event_id);
+    doBtnCommon(KEY_PAUSE, event_id);
 }
 
 void eventSnake(){

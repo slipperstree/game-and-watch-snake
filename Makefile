@@ -74,6 +74,7 @@ Snake/Src/key.c \
 Snake/Src/myMathUtil.c \
 Snake/Src/saveData.c \
 Snake/Src/display.c \
+Snake/Src/control.c \
 Snake/Src/embSnake.c
 
 # ASM sources
