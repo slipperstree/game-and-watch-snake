@@ -1,5 +1,5 @@
-# Snake game for Nintendo? Game &amp; Watch?
-This is a port of the [EmbSnake](https://gitee.com/slipperstree/EmbSnake) that runs on the Nintendo? Game &amp; Watch?: Super Mario Bros / Zelda game.
+# Snake game for Nintendo Game &amp; Watch
+This is a port of the [EmbSnake](https://gitee.com/slipperstree/EmbSnake) that runs on the Nintendo Game &amp; Watch: Super Mario Bros / Zelda game.
 
 ## Build
 You need backup your G&W first. See [game-and-watch-backup](https://github.com/ghidraninja/game-and-watch-backup)
