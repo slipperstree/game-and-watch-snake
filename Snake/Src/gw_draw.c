@@ -76,10 +76,10 @@ void bmp16_line(int x1, int y1, int x2, int y2, u32 clr,
 	}
 }
 
-INLINE void gw_plot(u16 x, u16 y, COLOR clr)
+void gw_plot(u16 x, u16 y, COLOR clr)
 {	framebuffer[y* SCREEN_W +x]= clr;	}
 
-INLINE void gw_line(u16 x1, u16 y1, u16 x2, u16 y2, COLOR clr)
+void gw_line(u16 x1, u16 y1, u16 x2, u16 y2, COLOR clr)
 {	bmp16_line(x1, y1, x2, y2, clr, framebuffer, SCREEN_W*2);			}
 
 void gw_line_width(u16 x1, u16 y1, u16 x2, u16 y2, u16 width, COLOR color){

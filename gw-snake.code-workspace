@@ -13,7 +13,8 @@
 			"mymathutil.h": "c",
 			"embsnakedevice.h": "c",
 			"binary.h": "c",
-			"def_types.h": "c"
+			"def_types.h": "c",
+			"gw_draw.h": "c"
 		}
 	}
 }

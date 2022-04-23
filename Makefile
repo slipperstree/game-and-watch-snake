@@ -68,6 +68,7 @@ Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_ospi.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
+Snake/Src/embSnake.c \
 Snake/Src/common.c \
 Snake/Src/font.c \
 Snake/Src/key.c \
@@ -76,7 +77,7 @@ Snake/Src/saveData.c \
 Snake/Src/display.c \
 Snake/Src/control.c \
 Snake/Src/gw_draw.c \
-Snake/Src/embSnake.c
+Snake/Src/embSnakeDevice.c
 
 # ASM sources
 ASM_SOURCES =  \
