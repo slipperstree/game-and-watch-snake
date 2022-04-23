@@ -26,6 +26,10 @@
 #include "flash.h"
 #include "lcd.h"
 #include "string.h"
+
+// for snake
+#include "common.h"
+#include "control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -138,43 +142,19 @@ int main(void)
   }
   //HAL_SAI_Transmit_DMA(&hsai_BlockA1, audiobuffer, sizeof(audiobuffer) / sizeof(audiobuffer[0]));
 
+  my_seed_rand(14);
+	CTL_init();
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
-    uint32_t buttons = buttons_get();
-    if(buttons & B_Left) {
-      color = 0xf000;
-    }
-    if(buttons & B_Right) {
-      color = 0x0f00;
-    }
-    if(buttons & B_Up) {
-      color = 0x00f0;
-    }
-    if(buttons & B_Down) {
-      
-      color = *ptr&0xff;
-    }
+    CTL_run();
     
-    for(int x=0; x < 320; x++) {
-      for(int y=0; y < 240; y++) {
-        // framebuffer[(y*320)+x] = i;
-        if(((x + i)/10 % 2 == 0) && (((y + i)/10 % 2 == 0))){
-          framebuffer[(y*320)+x] = color;
-        } else {
-          framebuffer[(y*320)+x] = 0xffff;
-        }
-        
-        // i++;
-      }
-      // i++;
-    }
-    
-    HAL_Delay(20);
-    i++;
+    HAL_Delay(10);
+    // i++;
     // if(i % 30 == 0) {
     //   if(color == 0xf800) {
     //     color = 0x7e0;

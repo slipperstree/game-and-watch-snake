@@ -13,14 +13,14 @@
 ######################################
 # target
 ######################################
-TARGET = gw_base
+TARGET = gw_snake
 
 
 ######################################
 # building variables
 ######################################
 # debug build?
-DEBUG = 1
+DEBUG = 0
 # optimization
 OPT = -Og
 
@@ -67,7 +67,17 @@ Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_ospi.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
-Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c
+Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
+Snake/Src/embSnake.c \
+Snake/Src/common.c \
+Snake/Src/font.c \
+Snake/Src/key.c \
+Snake/Src/myMathUtil.c \
+Snake/Src/saveData.c \
+Snake/Src/display.c \
+Snake/Src/control.c \
+Snake/Src/gw_draw.c \
+Snake/Src/embSnakeDevice.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -128,7 +138,8 @@ C_INCLUDES =  \
 -IDrivers/STM32H7xx_HAL_Driver/Inc \
 -IDrivers/STM32H7xx_HAL_Driver/Inc/Legacy \
 -IDrivers/CMSIS/Device/ST/STM32H7xx/Include \
--IDrivers/CMSIS/Include
+-IDrivers/CMSIS/Include \
+-ISnake/Inc 
 
 
 # compile gcc flags
