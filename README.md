@@ -3,12 +3,9 @@ This is a port of the [EmbSnake](https://gitee.com/slipperstree/EmbSnake) that r
 
 ## Build
 You need backup your G&W first. See [game-and-watch-backup](https://github.com/ghidraninja/game-and-watch-backup)
-- Get Drivers
-You need STM32 Drivers in the `game-and-watch-snake` directory for the `Makefile`. 
-You can simply create a symbolic link to [game-and-watch-retro-go/Drivers](https://github.com/kbeckmann/game-and-watch-retro-go) using the following command
-`ln -s ../some-where/game-and-watch-retro-go/Drivers Drivers`
-- Build and flash
-`make flash`
+- You need STM32 Drivers in the `game-and-watch-snake` directory for the `Makefile`. 
+You can simply create a symbolic link to [game-and-watch-retro-go/Drivers](https://github.com/kbeckmann/game-and-watch-retro-go) using the following command: `ln -s ../some-where/game-and-watch-retro-go/Drivers Drivers`
+- Build and flash by `make flash`
 
 ## Features
 This game contains the following pages.
