@@ -73,6 +73,7 @@ Snake/Src/font.c \
 Snake/Src/key.c \
 Snake/Src/myMathUtil.c \
 Snake/Src/saveData.c \
+Snake/Src/display.c \
 Snake/Src/embSnake.c
 
 # ASM sources
