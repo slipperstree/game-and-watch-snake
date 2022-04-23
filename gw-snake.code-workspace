@@ -10,7 +10,10 @@
 			"common.h": "c",
 			"flash.h": "c",
 			"buttons.h": "c",
-			"mymathutil.h": "c"
+			"mymathutil.h": "c",
+			"embsnakedevice.h": "c",
+			"binary.h": "c",
+			"def_types.h": "c"
 		}
 	}
 }

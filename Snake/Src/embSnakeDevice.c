@@ -8,6 +8,7 @@
 
 #include "embSnakeDevice.h"
 #include "boradSupport.h"
+#include "gw_draw.h"
 
 // 临时变量用(sprintf等)
 extern u8 buff[128];
@@ -26,17 +27,16 @@ u16 drawAreaCurrY = 0;
 // 初始化显示设备
 // bgColor : 背景色，可用于初期清屏
 void devDisplayInit(u16 bgColor){
-    //TODO:GBA? LCD_Init();
+    //TODO:G&W? LCD_Init();
     devScreenOFF(); // 关闭LCD显示
-    //TODO:GBA? LCD_Clear(bgColor);
+    //TODO:G&W? LCD_Clear(bgColor);
     devScreenON();  // 打开LCD显示
-    //TODO:GBA? TFT_BL = 0;     // 打开液晶屏背光灯
+    //TODO:G&W? TFT_BL = 0;     // 打开液晶屏背光灯
 }
 
 // 填充一个矩形区域
 void devFillRectange(u16 x, u16 y, u16 width, u16 height, u16 color){
-    //drawRect(x, y, width, height, color);         // for gba_drawing.h
-    m3_rect(x, y, x+width, y+height, color);    // for tonc_video.h
+    gw_rect(x, y, x+width, y+height, color);
 }
 
 // 为绘制一个区域做准备。（外部调用了这个函数后会批量调用devPointInDrawArea来绘制各种图案或点阵文字）
@@ -64,36 +64,24 @@ void devPointInDrawArea(u16 color){
     if (drawAreaCurrY>drawAreaEndY || drawAreaCurrY > SCREEN_H || drawAreaCurrX > SCREEN_W) return;
 
     // 在当前位置绘制一个点
-    //drawPoint(drawAreaCurrX, drawAreaCurrY, color);   // for gba_drawing.h
-    m3_plot(drawAreaCurrX, drawAreaCurrY, color);       // for tonc_video.h
+    gw_plot(drawAreaCurrX, drawAreaCurrY, color);
 
     drawAreaCurrX++;
 }
 
-void myDrawLineWidth(u16 x1, u16 y1, u16 x2, u16 y2, u16 width, u16 color){
-
-    //drawLineWidth(x1, y1, x2, y2, width, color);   // for gba_drawing.h
-
-    // for gba_drawing.h
-    for ( u16 w = 0; w < width; w++ ) {
-        m3_line(x1+w, y1, x2+w, y2, color);
-    }
-    
-}
-
 // 绘制直线
 void devDrawLine(u16 x1, u16 y1, u16 x2, u16 y2, u16 width, u16 color){
-    myDrawLineWidth(x1, y1, x2, y2, width, color);
+    gw_line_width(x1, y1, x2, y2, width, color);
 }
 
 // 关闭屏幕显示(跟函数devScreenON搭配使用，如无必要可不用实现留空即可，实现了更好，可以防止刷新画面的过程被用户看见)
 void devScreenOFF(){
-    //TODO:GBA? LCD_WR_REG(0x28);
+    lcd_backlight_off();
 }
 
 // 打开屏幕显示(跟函数devScreenOFF搭配使用，如无必要可不用实现留空即可，实现了更好，可以防止刷新画面的过程被用户看见)
 void devScreenON(){
-    //TODO:GBA? LCD_WR_REG(0x29);
+    lcd_backlight_on();
 }
 
 // =========================================================================================
@@ -130,7 +118,7 @@ void devScreenON(){
 #define WRITE8(ADDR,DATA8)      EEPROM_Write_Byte(ADDR, DATA8)
 #define WRITE16(ADDR,DATA16)    EEPROM_Write_Byte(ADDR, H8(DATA16));EEPROM_Write_Byte(ADDR+1, L8(DATA16))
 
-//TODO:GBA? 保存设置
+//TODO:G&W? 保存设置
 // setting: 默认设置。防止首次上电时储存区还不存在游戏数据，此时请自行判断并保存传入的默认设置。
 void devLoadSetting(SaveData_Struct *setting){
 
@@ -153,7 +141,7 @@ void devLoadSetting(SaveData_Struct *setting){
     // }
 }
 
-//TODO:GBA? 
+//TODO:G&W? 
 void devSaveSetting(SaveData_Struct *setting){
 
     // // 先擦除扇区
@@ -174,40 +162,13 @@ void devSaveSetting(SaveData_Struct *setting){
 // ==    声音相关       =====================================================================
 // =========================================================================================
 
-// maxmod 声音资源定义
-mm_sound_effect mariodead = {
-		{ SFX_MARIODEAD } ,			// id
-		(int)(1.0f * (1<<10)),	// rate
-		0,		// handle
-		255,	// volume
-		0,		// panning
-	};
-
-// sound effect handle (for cancelling it later)
-mm_sfxhand amb = 0;
-
 // 声音模块初始化
 void devSndInit(){
-    // turn sound on
-	REG_SNDSTAT= SSTAT_ENABLE;
-	// snd1 on left/right ; both full volume
-	REG_SNDDMGCNT = SDMG_BUILD_LR(SDMG_SQR1, 7);
-	// DMG ratio to 100%
-	REG_SNDDSCNT= SDS_DMG100;
-
-	// no sweep
-	REG_SND1SWEEP= SSW_OFF;
-
-    // maxmod模块初始化
-    // initialise maxmod with soundbank and 8 channels
-    mmInitDefault( (mm_addr)soundbank_bin, 8 );
-
-    // 播放背景音乐
-    //mmStart( MOD_FLATOUTLIES, MM_PLAY_LOOP );
+    // TODO:G&W?
 }
 
 void playMaxmodSnd(){
-    mmEffectEx(&mariodead);
+    // TODO:G&W?
 }
 
 //  超级马里奥死亡时的音乐
@@ -216,41 +177,11 @@ void playMaxmodSnd(){
 //  GFFFEDCGGC
 //  .      ...
 void playGameOver(){
-    #define TUNE_TEMPAL_1 180
-    #define TUNE_TEMPAL_2 TUNE_TEMPAL_1*1.5
-    // envelope: vol=12, decay, max step time (7) ; 50% duty
-    // 设置音量，混响衰减度，混响持续时间（1-7）等
-	REG_SND1CNT= SSQR_ENV_BUILD(12, 0, 1) | SSQR_DUTY1_2;
-	REG_SND1FREQ= 0;
-
-    //REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_G, 1); My_delay_ms(TUNE_TEMPAL_1);
-    //REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_G, 1); My_delay_ms(TUNE_TEMPAL_2*2);
-
-    REG_SND1CNT= SSQR_ENV_BUILD(12, 0, 2) | SSQR_DUTY1_2;
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_G, 0); My_delay_ms(TUNE_TEMPAL_1);
-    REG_SND1CNT= SSQR_ENV_BUILD(12, 0, 1) | SSQR_DUTY1_2;
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_F, 1); My_delay_ms(TUNE_TEMPAL_2);
-    REG_SND1CNT= SSQR_ENV_BUILD(12, 0, 2) | SSQR_DUTY1_2;
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_F, 1); My_delay_ms(TUNE_TEMPAL_1);
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_F, 1); My_delay_ms(TUNE_TEMPAL_1);
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_E, 1); My_delay_ms(TUNE_TEMPAL_1);
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_D, 1); My_delay_ms(TUNE_TEMPAL_1);
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_C, 1); My_delay_ms(TUNE_TEMPAL_1);
-    REG_SND1CNT= SSQR_ENV_BUILD(12, 0, 1) | SSQR_DUTY1_2;
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_G, 0); My_delay_ms(TUNE_TEMPAL_2);
-    REG_SND1CNT= SSQR_ENV_BUILD(12, 0, 2) | SSQR_DUTY1_2;
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_G, 0); My_delay_ms(TUNE_TEMPAL_1);
-
-    REG_SND1CNT= SSQR_ENV_BUILD(12, 0, 4) | SSQR_DUTY1_2;
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_C, 0);
+    // TODO:G&W?
 }
 
 void playBeep(u8 beepLen){
-    // envelope: vol=12, decay, max step time (7) ; 50% duty
-	REG_SND1CNT= SSQR_ENV_BUILD(12, 0, beepLen) | SSQR_DUTY1_2;
-	REG_SND1FREQ= 0;
-
-    REG_SND1FREQ = SFREQ_RESET | SND_RATE(NOTE_A, 0);
+    // TODO:G&W?
 }
 
 // 短beep声音
@@ -273,8 +204,7 @@ void devPlaySound(Sound_Type soundType){
     case SOUND_DEAD:
         break;
     case SOUND_GAMEOVER:
-        //playGameOver();
-        playMaxmodSnd();
+        playGameOver();
         break;
     default:
         break;
@@ -288,7 +218,7 @@ void devPlaySound(Sound_Type soundType){
 // 进入主画面时会调用这个函数，如有需要请实现想要的效果(比如关闭LED)
 // 没有要做的留空即可
 void devEnterHomePage(){
-    //TODO:GBA? LED_ALL_OFF();
+    lcd_backlight_off();
 }
 
 // 进入Demo画面时会调用这个函数，如有需要请实现想要的效果

@@ -64,7 +64,7 @@ void CTL_run(){
     KEY_keyscan();
 
     
-    // TODO:GBA? 本来是在定时器中断里面做的，GBA定时器中断有吗？
+    // TODO:G&W? 本来是在定时器中断里面做的，GBA定时器中断有吗？
     ttWalk++;
     ttFlag++;
 
