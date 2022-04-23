@@ -16,10 +16,10 @@
 // ### 贪食蛇模块 定义 根据需要修改以下定义 ##################################################################
 
 // 地图大小(非屏幕分辨率)
-// #define SNAKE_SIZE_X  26
-// #define SNAKE_SIZE_Y  14
-#define SNAKE_SIZE_X  19
-#define SNAKE_SIZE_Y  7
+#define SNAKE_SIZE_X  25
+#define SNAKE_SIZE_Y  14
+// #define SNAKE_SIZE_X  19
+// #define SNAKE_SIZE_Y  7
 
 // 演示模式文字显示位置
 #define SNAKE_DEMO_TITLE_1_X  6

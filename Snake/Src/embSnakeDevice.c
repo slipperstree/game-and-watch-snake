@@ -34,11 +34,6 @@ void devDisplayInit(u16 bgColor){
     //TODO:G&W? TFT_BL = 0;     // 打开液晶屏背光灯
 }
 
-// 填充一个矩形区域
-void devFillRectange(u16 x, u16 y, u16 width, u16 height, u16 color){
-    gw_rect(x, y, x+width, y+height, color);
-}
-
 // 为绘制一个区域做准备。（外部调用了这个函数后会批量调用devPointInDrawArea来绘制各种图案或点阵文字）
 // 一般来说在这里调用底层的设置显示区域命令以及开始绘图命令
 // LCD_SetArea(startX, startY, startX+areaWidth-1, startY+areaHeight-1);
@@ -72,6 +67,20 @@ void devPointInDrawArea(u16 color){
 // 绘制直线
 void devDrawLine(u16 x1, u16 y1, u16 x2, u16 y2, u16 width, u16 color){
     gw_line_width(x1, y1, x2, y2, width, color);
+}
+
+// 填充一个矩形区域
+void devFillRectange(u16 x, u16 y, u16 width, u16 height, u16 color){
+    //gw_rect(x, y, x+width, y+height, color);
+    devPrepareForDrawArea(x, y, width, height);
+    u16 wTmp = width;
+    u16 hTmp = height;
+    while(wTmp--){
+        hTmp = height;
+        while(hTmp--){
+            devPointInDrawArea(color);
+        }
+    }
 }
 
 // 关闭屏幕显示(跟函数devScreenON搭配使用，如无必要可不用实现留空即可，实现了更好，可以防止刷新画面的过程被用户看见)

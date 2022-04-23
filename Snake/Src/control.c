@@ -165,9 +165,9 @@ void CTL_run(){
             }
             break;
         case MODE_GAMEOVER:
-            // Gameover画面动态效果 TODO:影响声音播放，暂时不闪烁
+            // Gameover画面动态效果
             if (flashFlag == 1) {
-                //DISP_flashGameOver(flashOnOff, lastGameScore > oldSaveDataHScore ? 1 : 0);
+                DISP_flashGameOver(flashOnOff, lastGameScore > oldSaveDataHScore ? 1 : 0);
             }
             break;
         default:

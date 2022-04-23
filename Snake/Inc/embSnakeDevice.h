@@ -29,25 +29,25 @@
 
     // ******* 2-根据硬件电气连接修改下列定义 ***********************************
 
+        // ---------- 按键 按下状态和电平状态对应关系，根据具体电路修改 ----------
+        // 按键按下为真
+        #define KEY_DOWN_VALUE 1
+        // 按键未按下为假
+        #define KEY_UP_VALUE   0
+
         // ---------- 按键个数 ----------
         #define KEY_CNT  8
 
         // ---------- 按键 IO口定义 ----------
         // BTNn的名字不要修改，预留了最多八个按键，不需要的无视即可
-        #define BTN1   (buttons & B_Up)?1:0
-        #define BTN2   (buttons & B_Down)?1:0
-        #define BTN3   (buttons & B_Left)?1:0
-        #define BTN4   (buttons & B_Right)?1:0
-        #define BTN5   (buttons & B_A)?1:0
-        #define BTN6   (buttons & B_B)?1:0
-        #define BTN7   (buttons & B_GAME)?1:0
-        #define BTN8   (buttons & B_PAUSE)?1:0
-                            
-        // ---------- 按键 按下状态和电平状态对应关系，根据具体电路修改 ----------
-        // 按键按下为真（参见gba_input.h）
-        #define KEY_DOWN_VALUE 1
-        // 按键未按下为假
-        #define KEY_UP_VALUE   0
+        #define BTN1   (buttons & B_Up)?KEY_DOWN_VALUE:KEY_UP_VALUE
+        #define BTN2   (buttons & B_Down)?KEY_DOWN_VALUE:KEY_UP_VALUE
+        #define BTN3   (buttons & B_Left)?KEY_DOWN_VALUE:KEY_UP_VALUE
+        #define BTN4   (buttons & B_Right)?KEY_DOWN_VALUE:KEY_UP_VALUE
+        #define BTN5   (buttons & B_A)?KEY_DOWN_VALUE:KEY_UP_VALUE
+        #define BTN6   (buttons & B_B)?KEY_DOWN_VALUE:KEY_UP_VALUE
+        #define BTN7   (buttons & B_GAME)?KEY_DOWN_VALUE:KEY_UP_VALUE
+        #define BTN8   (buttons & B_PAUSE)?KEY_DOWN_VALUE:KEY_UP_VALUE
 
     // ******* 3-根据需要适当修改下列用于判断单击，双击等各种按键动作判定的时间长短 ************
     // *******   并非以ms为单位，请根据实际速度调整到合适的数值） **************************
@@ -69,10 +69,10 @@
 // *******************************************************************************************************
 
     // 屏幕分辨率
-    //#define SCREEN_W  320
-    //#define SCREEN_H  240
-    #define SCREEN_W  240
-    #define SCREEN_H  160
+    #define SCREEN_W  320
+    #define SCREEN_H  240
+    // #define SCREEN_W  240
+    // #define SCREEN_H  160
 
     // 元素颜色设置
     // 默认背景/前景（程序中可通过 DISP_setBackColor/DISP_setForeColor 随时修改）
@@ -82,13 +82,20 @@
     #define COLOR_TITLE1            COLOR_SKYLT
     #define COLOR_TITLE2            COLOR_GREENLT
     // 蛇/食物
-    #define COLOR_DEFAULT_SNAKE     0x3234
+    #define COLOR_DEFAULT_SNAKE     0xa50c
     #define COLOR_DEFAULT_APPLE     COLOR_YELLOW
     // 游戏界面框架颜色
     #define COLOR_DEFAULT_FRAME     COLOR_DEFAULT_FRONT
 
     // 使用哪套位图字体绘制食物/蛇/障碍物等(在font.h / font.c中定义)
     #define BLOCK_VIEW_FONT FONT_IMG_SNAKE12
+
+    // 框架厚度
+    #define FRAME_THICKNESS 1
+
+    // 游戏区域左上角坐标偏移
+    #define GAME_AREA_X_OFFSET 2
+    #define GAME_AREA_Y_OFFSET 0
 
     // 游戏界面底部信息栏高度
     #define FRAME_BOTTOM_INFO_HEIGHT  34

@@ -35,22 +35,15 @@ typedef struct { u32 data[8];  } BLOCK;
 
 typedef const char * const CSTR;
 
-typedef s32 FIXED;					//!< Fixed point type
-typedef u16 COLOR;					//!< Type for colors
-typedef u16 SCR_ENTRY, SE;			//!< Type for screen entries
-typedef u8  SCR_AFF_ENTRY, SAE;		//!< Type for affine screen entries
-
-typedef struct { u32 data[8];  } TILE, TILE4;
-
-typedef struct { u32 data[16]; } TILE8;
+typedef s32 FIXED;
+typedef u16 COLOR;
 
 #ifndef __cplusplus
-//! Boolean type
 typedef enum { false, true } bool;
 #endif
 
 #ifndef BOOL
-typedef u8 BOOL;	// C++ bool == u8 too, that's why
+typedef u8 BOOL;
 #define TRUE 1
 #define FALSE 0
 #endif

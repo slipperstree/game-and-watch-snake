@@ -5,36 +5,41 @@
 #include "font.h"
 #include "embSnakeDevice.h"
 
+// define start ------------------------------------------------------------------------------------------
+
 // 各种字符串定义，可自由修改
 // 屏幕较小的话要改短一些,大屏也不要太长,预留的缓冲区只有128字节,超出的话会发生未知问题
-u8* STR_PRESS_ANY_KEY_CN             = (u8*)"  按任意键继续..";
-u8* STR_PRESS_ANY_KEY_EN             = (u8*)"Press Any Key..";
-u8* STR_DEMO_MENU_CN                 = (u8*)"壹速 貳声音 叁返";  //壹貳叁代表按钮①②③图标
-u8* STR_DEMO_MENU_EN                 = (u8*)"壹Sound 貳Speed 叁Back";
-u8* STR_GAME_MENU_CN                 = (u8*)"壹左 貳声音 叁右";  //壹貳叁代表按钮①②③图标
-u8* STR_GAME_MENU_EN                 = (u8*)"壹Left 貳Foward 叁Right";
-u8* STR_GAMEOVER_GAMEOVER_CN         = (u8*)"游戏结束";
-u8* STR_GAMEOVER_GAMEOVER_EN         = (u8*)"Game Over";
-u8* STR_GAMEOVER_NEWRECORD_CN        = (u8*)"恭喜,刷新记录!";
-u8* STR_GAMEOVER_NEWRECORD_EN        = (u8*)"New Record";
-u8* STR_GAMEOVER_HSCORE_CN           = (u8*)"记录:";
-u8* STR_GAMEOVER_HSCORE_EN           = (u8*)"Record";
-u8* STR_GAMEOVER_SCORE_CN            = (u8*)"得分:";
-u8* STR_GAMEOVER_SCORE_EN            = (u8*)"Score:";
+#if define UI_LANG_EN
+    u8* STR_PRESS_ANY_KEY_EN             = (u8*)"Press Any Key..";
+    u8* STR_DEMO_MENU_EN                 = (u8*)"壹Sound 貳Speed 叁Back";
+    u8* STR_GAME_MENU_EN                 = (u8*)"壹Left 貳Foward 叁Right";
+    u8* STR_GAMEOVER_GAMEOVER_EN         = (u8*)"Game Over";
+    u8* STR_GAMEOVER_NEWRECORD_EN        = (u8*)"New Record";
+    u8* STR_GAMEOVER_HSCORE_EN           = (u8*)"Record";
+    u8* STR_GAMEOVER_SCORE_EN            = (u8*)"Score:";
+#endif
+#if define UI_LANG_CN
+    u8* STR_PRESS_ANY_KEY_CN             = (u8*)"  按任意键继续..";
+    u8* STR_DEMO_MENU_CN                 = (u8*)"壹速 貳声音 叁返";  //壹貳叁代表按钮①②③图标
+    u8* STR_GAME_MENU_CN                 = (u8*)"壹左 貳声音 叁右";  //壹貳叁代表按钮①②③图标
+    u8* STR_GAMEOVER_GAMEOVER_CN         = (u8*)"游戏结束";
+    u8* STR_GAMEOVER_NEWRECORD_CN        = (u8*)"恭喜,刷新记录!";
+    u8* STR_GAMEOVER_HSCORE_CN           = (u8*)"记录:";
+    u8* STR_GAMEOVER_SCORE_CN            = (u8*)"得分:";
+#endif
+?
+u8* STR_GAME_INFO                        = (u8*)"Snake on Game & Watch";
 
 #define  TITLE_Y         15
 #define  SCROE_Y         60
 #define HSCROE_Y        100
 
-// 框架厚度（drawFrame中计算并设置）
-u8 frameThickness=1;
+// define end ------------------------------------------------------------------------------------------
 
 // 游戏区域左上角坐标Y偏移(也就是框架厚度)
-u16 GAME_AREA_X_OFFSET=2;
-
+u16 gameArea_X_offset=0;
 // 游戏区域左上角坐标Y偏移（drawFrame中计算并设置）(去掉顶部框架和顶部信息区域以及上方横栏高度(也就是框架厚度))
-u16 GAME_AREA_Y_OFFSET=0;
-
+u16 gameArea_Y_offset=0;
 // 临时变量用(sprintf等),需要修改size的话请一并修改common.c中的同名变量,这里只是声明
 extern u8 buff[128];
 
@@ -52,7 +57,7 @@ void clearScreen(void);     // 清屏
 Font_Type* showChar(u16 x, u16 y, u8 *chr, Font_Type *font, u16 colorBg, u16 colorFont);
 
 // 获取随机颜色
-u16 randBGR565(){
+u16 randRGB565(){
     u8 r=0, g=0, b=0;
 
     r = My_real_rand() % 10;
@@ -106,7 +111,7 @@ u16 randBGR565(){
         }
         break;
     }
-    return RGB888toBGR555(r, g, b);
+    return RGB888toRGB565(r, g, b);
 }
 
 void clearScreen(void){
@@ -192,8 +197,8 @@ void DISP_updateGameBlock(u8 x, u8 y){
     height = BLOCK_VIEW_FONT.fontHeight;
 
     // 绘图开始坐标，原始坐标加上偏移坐标（游戏区域开始位置，在drawFrame函数中计算并设置）
-    startX = x * width + GAME_AREA_X_OFFSET;
-    startY = y * height + GAME_AREA_Y_OFFSET;
+    startX = x * width + gameArea_X_offset;
+    startY = y * height + gameArea_Y_offset;
 
     #if ISDEBUG
     sprintf(buff, "DISP_updateGameBlock 1 fontWidth=%b2d, fontHeight=%b2d\r\n", width, height);LOG(buff);
@@ -480,7 +485,7 @@ void DISP_drawWelcome(u8 isStartUp){
             while(1){
                 r+=10;
                 if (r>=256) break;
-                showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toBGR555(r, 0, 0), COLOR_BG);
+                showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toRGB565(r, 0, 0), COLOR_BG);
             }
             // 出现后等待一会儿
             My_delay_ms(1000);
@@ -490,7 +495,7 @@ void DISP_drawWelcome(u8 isStartUp){
             while(r<255){
                 r+=20;
                 if (r>=256) r = 255;
-                showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toBGR555(r, 0, 0), COLOR_BG);
+                showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, RGB888toRGB565(r, 0, 0), COLOR_BG);
             }
             // 出现后等待一会儿
             My_delay_ms(500);
@@ -518,15 +523,15 @@ void DISP_flashWelcome(u8 flashOnOff){
         // 学电LOGO变幻颜色
         logoX = (SCREEN_W - FONTHZ_XD_LOGO40.fontWidth) / 2;
         logoY = SCREEN_H/8 + FONTHZ_TITLE64.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2;
-        showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, randBGR565(), COLOR_BG);
+        showChar(logoX, logoY, FONT_HZ_XD_LOGO, &FONTHZ_XD_LOGO40, randRGB565(), COLOR_BG);
 
         // 闪烁文字
         showStringCenter(logoY + FONTHZ_XD_LOGO40.fontHeight + FONTHZ_XD_LOGO40.fontHeight / 2, STR_PRESS_ANY_KEY_CN, &FONTHZ32, flashOnOff);
 
         // 标题 贪吃蛇 变幻颜色
-        // showChar(10, 20, "贪", &FONTHZ_TITLE64, COLOR_BG, randBGR565());
-        // showChar(50, 20, "吃", &FONTHZ_TITLE64, COLOR_BG, randBGR565());
-        // showChar(90, 20, "蛇", &FONTHZ_TITLE64, COLOR_BG, randBGR565());
+        // showChar(10, 20, "贪", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
+        // showChar(50, 20, "吃", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
+        // showChar(90, 20, "蛇", &FONTHZ_TITLE64, COLOR_BG, randRGB565());
     #endif
 }
 
@@ -545,40 +550,40 @@ void DISP_drawDemo(u8 soundOnOff){
 
     // 注意，这句计算必须放在DISP_drawFrame的后面。否则第一次计算时还未被设置正确的数值，为默认值1。
     // 误以为1是正确的值调整后面的位置第一次是对的，第二次就全错了。
-    topInfoY =frameThickness + 2;
+    topInfoY =FRAME_THICKNESS + 5;
 
     // 顶部信息
     // 食物 = 0  (当前吃了多少个)
-    showChar(frameThickness + 10, topInfoY+3, FONT_SNAKE_BLOCK_APPLE, &BLOCK_VIEW_FONT, COLOR_BG, COLOR_FO);
-    devShowString(frameThickness + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, " =  0", &FONT20, COLOR_BG, COLOR_FO);
+    showChar(FRAME_THICKNESS + 10, topInfoY+3, FONT_SNAKE_BLOCK_APPLE, &BLOCK_VIEW_FONT, COLOR_BG, COLOR_FO);
+    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, " =  0", &FONT20, COLOR_BG, COLOR_FO);
     // 居右显示文字
-    devShowString(SCREEN_W - frameThickness - calcStringWidth("C.Ling 2022.3", &FONT20) - 5, topInfoY, "C.Ling 2022.3", &FONT20, COLOR_BG, COLOR_FO);
+    devShowString(SCREEN_W - FRAME_THICKNESS - calcStringWidth(STR_GAME_INFO, &FONT20) - 5, topInfoY, STR_GAME_INFO, &FONT20, COLOR_BG, COLOR_FO);
 
     // 游戏区域中央显示 演示模式 （显示区域需要设置为障碍物不让蛇通过）
     #ifdef UI_LANG_EN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - frameThickness - 1, STR_DEMO_MODE_EN, &FONT8, flashOnOff);
+        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MODE_EN, &FONT8, flashOnOff);
     #endif
     #ifdef UI_LANG_CN
-        showChar(SNAKE_DEMO_TITLE_1_X * 12  + GAME_AREA_X_OFFSET, 
-                 SNAKE_DEMO_TITLE_1_Y * 12 + GAME_AREA_Y_OFFSET, 
+        showChar(SNAKE_DEMO_TITLE_1_X * 12  + gameArea_X_offset, 
+                 SNAKE_DEMO_TITLE_1_Y * 12 + gameArea_Y_offset, 
                  FONT_HZ_DEMO_MODE_YAN, &FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_R, COLOR_BG );
-        showChar(SNAKE_DEMO_TITLE_2_X * 12  + GAME_AREA_X_OFFSET, 
-                 SNAKE_DEMO_TITLE_2_Y * 12 + GAME_AREA_Y_OFFSET, 
+        showChar(SNAKE_DEMO_TITLE_2_X * 12  + gameArea_X_offset, 
+                 SNAKE_DEMO_TITLE_2_Y * 12 + gameArea_Y_offset, 
                  FONT_HZ_DEMO_MODE_SHI1,&FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_G, COLOR_BG );
-        showChar(SNAKE_DEMO_TITLE_3_X * 12  + GAME_AREA_X_OFFSET, 
-                 SNAKE_DEMO_TITLE_3_Y * 12 + GAME_AREA_Y_OFFSET, 
+        showChar(SNAKE_DEMO_TITLE_3_X * 12  + gameArea_X_offset, 
+                 SNAKE_DEMO_TITLE_3_Y * 12 + gameArea_Y_offset, 
                  FONT_HZ_DEMO_MODE_MO,  &FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_B, COLOR_BG );
-        showChar(SNAKE_DEMO_TITLE_4_X * 12  + GAME_AREA_X_OFFSET, 
-                 SNAKE_DEMO_TITLE_4_Y * 12 + GAME_AREA_Y_OFFSET, 
+        showChar(SNAKE_DEMO_TITLE_4_X * 12  + gameArea_X_offset, 
+                 SNAKE_DEMO_TITLE_4_Y * 12 + gameArea_Y_offset, 
                  FONT_HZ_DEMO_MODE_SHI2,&FONTHZ_DEMO_MOEDE24, COLOR_WINLOGO_Y, COLOR_BG );
     #endif
 
     // 底部信息
     #ifdef UI_LANG_EN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - frameThickness - 1, STR_DEMO_MENU_EN, &FONT8, flashOnOff);
+        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU_EN, &FONT8, flashOnOff);
     #endif
     #ifdef UI_LANG_CN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - frameThickness - 1, STR_DEMO_MENU_CN, &FONTHZ32, 0);
+        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_DEMO_MENU_CN, &FONTHZ32, 0);
     #endif
 
     // 绘制声音状态
@@ -593,11 +598,11 @@ void DISP_drawDemo(u8 soundOnOff){
 
 // ##### Demo页 吃到食物时被调用一次，更新画面上的分数
 void DISP_updateDemoScore(u16 maxDemoScore, u16 nowDemoScore){
-    u8 topInfoY = frameThickness + 2;
+    u8 topInfoY = FRAME_THICKNESS + 5;
 
     // 顶部信息栏更新分数
     sprintf(buff, " =%3u", nowDemoScore);
-    devShowString(frameThickness + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, buff, &FONT20, COLOR_BG, COLOR_FO);
+    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, buff, &FONT20, COLOR_BG, COLOR_FO);
 }
 
 // ##### Demo页 死亡时被调用一次，可做一些显示处理，目前什么都没做
@@ -635,21 +640,21 @@ void DISP_drawGame(u8 soundOnOff){
 
     // 注意，这句计算必须放在DISP_drawFrame的后面。否则第一次计算时还未被设置正确的数值，为默认值1。
     // 误以为1是正确的值调整后面的位置第一次是对的，第二次就全错了。
-    topInfoY =frameThickness + 2;
+    topInfoY =FRAME_THICKNESS + 5;
 
     // 顶部信息
     // 食物 = 0  (当前吃了多少个)
-    showChar(frameThickness + 10, topInfoY+3, FONT_SNAKE_BLOCK_APPLE, &BLOCK_VIEW_FONT, COLOR_BG, COLOR_FO);
-    devShowString(frameThickness + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, " =  0", &FONT20, COLOR_BG, COLOR_FO);
+    showChar(FRAME_THICKNESS + 10, topInfoY+3, FONT_SNAKE_BLOCK_APPLE, &BLOCK_VIEW_FONT, COLOR_BG, COLOR_FO);
+    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, " =  0", &FONT20, COLOR_BG, COLOR_FO);
     // 居右显示文字
-    devShowString(SCREEN_W - frameThickness - calcStringWidth("Snake v1.0", &FONT20) - 5, topInfoY, "Snake v1.0", &FONT20, COLOR_BG, COLOR_FO);
+    devShowString(SCREEN_W - FRAME_THICKNESS - calcStringWidth(STR_GAME_INFO, &FONT20) - 5, topInfoY, STR_GAME_INFO, &FONT20, COLOR_BG, COLOR_FO);
 
     // 底部信息
     #ifdef UI_LANG_EN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - frameThickness - 1, STR_GAME_MENU_EN, &FONT8, flashOnOff);
+        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU_EN, &FONT8, flashOnOff);
     #endif
     #ifdef UI_LANG_CN
-        showStringCenter(SCREEN_H - FONT32.fontHeight - frameThickness - 1, STR_GAME_MENU_CN, &FONTHZ32, 0);
+        showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU_CN, &FONTHZ32, 0);
     #endif
 
     // 绘制声音状态
@@ -664,11 +669,11 @@ void DISP_drawGame(u8 soundOnOff){
 
 // ##### Game页 吃到食物时被调用一次，更新画面上的分数
 void DISP_updateGameScore(u16 maxDemoScore, u16 nowDemoScore){
-    u8 topInfoY = frameThickness + 2;
+    u8 topInfoY = FRAME_THICKNESS + 5;
 
     // 顶部信息栏更新分数
     sprintf(buff, " =%3u", nowDemoScore);
-    devShowString(frameThickness + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, buff, &FONT20, COLOR_BG, COLOR_FO);
+    devShowString(FRAME_THICKNESS + 10 + BLOCK_VIEW_FONT.fontWidth, topInfoY, buff, &FONT20, COLOR_BG, COLOR_FO);
 }
 
 // ##### GameOver页 初始化时被调用一次
@@ -717,7 +722,7 @@ void DISP_flashGameOver(u8 flashOnOff, u8 isNewRecord){
         if (isNewRecord)
         {
             // 刷新记录动态效果
-            showStringCenterColor(TITLE_Y, STR_GAMEOVER_NEWRECORD_CN, &FONTHZ32, COLOR_BG, randBGR565(), 0);
+            showStringCenterColor(TITLE_Y, STR_GAMEOVER_NEWRECORD_CN, &FONTHZ32, COLOR_BG, randRGB565(), 0);
         }
 
         // 底部闪烁文字 按任意键继续...
@@ -730,26 +735,25 @@ void DISP_drawFrame() {
     u16 barTopY, barBottomY;
 
     // 墙体厚度 = (屏幕宽 - 游戏区域宽(地图SIZE_Y*蛇Block字体高)) / 2
-    //frameThickness = (SCREEN_W - SNAKE_SIZE_X * BLOCK_VIEW_FONT.fontWidth) / 2;
-    frameThickness = 4;
+    //FRAME_THICKNESS = (SCREEN_W - SNAKE_SIZE_X * BLOCK_VIEW_FONT.fontWidth) / 2;
 
     // 游戏区域下方横栏位置Y = 屏幕高 - 底部边框高 - 底部信息栏高 - 下方横栏高(也是边框高)
-    barBottomY = SCREEN_H - frameThickness - FRAME_BOTTOM_INFO_HEIGHT - frameThickness;
+    barBottomY = SCREEN_H - FRAME_THICKNESS - FRAME_BOTTOM_INFO_HEIGHT - FRAME_THICKNESS;
 
     // 游戏区域上方横栏位置Y = 游戏区域下方横栏位置Y - 游戏区域高(地图SIZE_Y*蛇Block字体高) - 上方横栏高(也是边框高)
-    barTopY = barBottomY - (SNAKE_SIZE_Y * BLOCK_VIEW_FONT.fontHeight) - frameThickness;
+    barTopY = barBottomY - (SNAKE_SIZE_Y * BLOCK_VIEW_FONT.fontHeight) - FRAME_THICKNESS;
 
     // 开始绘制(实心矩形拼接)
-    devFillRectange(0, 0, SCREEN_W, frameThickness, COLOR_FRAME);                           // 顶
-    devFillRectange(0, 0, frameThickness, SCREEN_H, COLOR_FRAME);                           // 左
-    devFillRectange(SCREEN_W - frameThickness, 0, frameThickness, SCREEN_H, COLOR_FRAME);   // 右
-    devFillRectange(0, barTopY, SCREEN_W, frameThickness, COLOR_FRAME);                     // 上横栏
-    devFillRectange(0, barBottomY, SCREEN_W, frameThickness, COLOR_FRAME);                  // 下横栏
-    devFillRectange(0, SCREEN_H - frameThickness, SCREEN_W, frameThickness, COLOR_FRAME);   // 底
+    devFillRectange(0, 0, SCREEN_W, FRAME_THICKNESS, COLOR_FRAME);                           // 顶
+    devFillRectange(0, 0, FRAME_THICKNESS, SCREEN_H, COLOR_FRAME);                           // 左
+    devFillRectange(SCREEN_W - FRAME_THICKNESS, 0, FRAME_THICKNESS, SCREEN_H, COLOR_FRAME);   // 右
+    devFillRectange(0, barTopY, SCREEN_W, FRAME_THICKNESS, COLOR_FRAME);                     // 上横栏
+    devFillRectange(0, barBottomY, SCREEN_W, FRAME_THICKNESS, COLOR_FRAME);                  // 下横栏
+    devFillRectange(0, SCREEN_H - FRAME_THICKNESS, SCREEN_W, FRAME_THICKNESS, COLOR_FRAME);   // 底
 
     // 游戏区域Y偏移
-    GAME_AREA_Y_OFFSET = barTopY + frameThickness;
-    GAME_AREA_X_OFFSET = frameThickness + 3;
+    gameArea_Y_offset = barTopY + FRAME_THICKNESS + GAME_AREA_Y_OFFSET;
+    gameArea_X_offset = FRAME_THICKNESS + GAME_AREA_X_OFFSET;
 }
 
 // 声音和静音状态
@@ -757,10 +761,10 @@ void DISP_drawSound(u8 soundOnOff) {
     if (soundOnOff)
     {
         #ifdef UI_LANG_EN
-            showStringCenter(SCREEN_H - FONT32.fontHeight - frameThickness - 1, STR_GAME_MENU_EN, &FONT8, flashOnOff);
+            showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, STR_GAME_MENU_EN, &FONT8, flashOnOff);
         #endif
         #ifdef UI_LANG_CN
-            showStringCenter(SCREEN_H - FONT32.fontHeight - frameThickness - 1, "貳声音", &FONTHZ32, 0);
+            showStringCenter(SCREEN_H - FONT32.fontHeight - FRAME_THICKNESS - 1, "貳声音", &FONTHZ32, 0);
         #endif
     } else {
         // 绘制静音        

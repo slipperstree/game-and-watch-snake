@@ -6,8 +6,8 @@
 #include "embSnakeDevice.h"
 
 // 界面语言
-//#define UI_LANG_EN
-#define UI_LANG_CN
+#define UI_LANG_EN
+// #define UI_LANG_CN
 
 // --- 以下不要修改 ------------------------------------------------------------------------------------------------------------
 #define DISP_YES 1
