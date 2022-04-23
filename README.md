@@ -15,11 +15,11 @@ This game contains the following pages.
 - Home
 - Demo mode (which can play game it self just like G&W mario or zelda TIME MODE does)
 - Game mode (which you can play by yourself)
-- Game over page (Hiscore cannot be save in flash by now)
+- Game over page (Hiscore cannot be saved in flash by now)
 - etc.
 
 ## Controls
-- Press any botton at Home page will start a new game.
+- Press any button at Home page will start a new game.
 - Wait a while at Home page will start demo.
 - Swich Game / Demo mode by press GAME / TIME button.
 - Other operation will show at the bottom of screen.
