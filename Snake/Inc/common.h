@@ -8,6 +8,10 @@
 
 #include "def_types.h"
 
+#include "buttons.h"
+#include "flash.h"
+#include "lcd.h"
+
 void My_delay_ms(u16 n);
 u8 My_strlen(char* x);
 

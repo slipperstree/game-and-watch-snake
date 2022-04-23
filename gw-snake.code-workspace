@@ -4,5 +4,12 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"*.lua": "lua",
+			"common.h": "c",
+			"flash.h": "c",
+			"buttons.h": "c"
+		}
+	}
 }

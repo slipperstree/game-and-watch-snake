@@ -20,7 +20,7 @@ TARGET = gw_snake
 # building variables
 ######################################
 # debug build?
-DEBUG = 1
+DEBUG = 0
 # optimization
 OPT = -Og
 
@@ -70,6 +70,7 @@ Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
 Snake/Src/common.c \
 Snake/Src/font.c \
+Snake/Src/key.c \
 Snake/Src/embSnake.c
 
 # ASM sources
