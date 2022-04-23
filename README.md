@@ -6,6 +6,7 @@ You need backup your G&W first. See [game-and-watch-backup](https://github.com/g
 - You need STM32 Drivers in the `game-and-watch-snake` directory for the `Makefile`. 
 You can simply create a symbolic link to [game-and-watch-retro-go/Drivers](https://github.com/kbeckmann/game-and-watch-retro-go) using the following command: `ln -s ../some-where/game-and-watch-retro-go/Drivers Drivers`
 - Build and flash by `make flash`
+- Or you can just download [pre builded ELF file](/Release/gw_snake.elf) for test.
 
 ## Features
 This game contains the following pages.
