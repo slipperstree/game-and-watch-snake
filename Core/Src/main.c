@@ -25,6 +25,7 @@
 #include "buttons.h"
 #include "flash.h"
 #include "lcd.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -135,7 +136,7 @@ int main(void)
   for (uint32_t i = 0; i < sizeof(audiobuffer) / sizeof(audiobuffer[0]); i++) {
     audiobuffer[i] = (i % (48000 / 500)) > 48 ? 200 : -200;
   }
-  HAL_SAI_Transmit_DMA(&hsai_BlockA1, audiobuffer, sizeof(audiobuffer) / sizeof(audiobuffer[0]));
+  //HAL_SAI_Transmit_DMA(&hsai_BlockA1, audiobuffer, sizeof(audiobuffer) / sizeof(audiobuffer[0]));
 
   while (1)
   {
