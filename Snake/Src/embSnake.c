@@ -9,7 +9,6 @@
  ******************************************************************************************************/
 
 #include "embSnake.h"
-#include "stdio.h"
 
 #ifndef USE_EXTERN_REAL_RAND_FUNC
 #include "stdlib.h"
@@ -17,8 +16,8 @@
 #endif
 
 #ifdef USE_EXTERN_REAL_RAND_FUNC
-extern u16 My_real_rand();
-#define RAND_FUNC My_real_rand
+extern u16 extRealRand4EmbSnake();
+#define RAND_FUNC extRealRand4EmbSnake
 #endif
 
 // 临时变量用(sprintf等)

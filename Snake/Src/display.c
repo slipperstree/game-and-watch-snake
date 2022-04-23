@@ -10,36 +10,51 @@
 // 各种字符串定义，可自由修改
 // 屏幕较小的话要改短一些,大屏也不要太长,预留的缓冲区只有128字节,超出的话会发生未知问题
 #ifdef UI_LANG_EN
-    u8* STR_PRESS_ANY_KEY             = (u8*)"Press Any Button";
-    u8* STR_DEMO_MENU                 = (u8*)"B:Speed P:Sound Other:Home";
-    u8* STR_GAME_MENU                 = (u8*)"P:Sound";
+    u8* STR_PRESS_ANY_KEY             = (u8*)"Press any btn";
+    u8* STR_DEMO_MENU                 = (u8*)"G:Play B:Speed Other:Home";
+    u8* STR_GAME_MENU                 = (u8*)"T:Auto";
     u8* STR_GAMEOVER_GAMEOVER         = (u8*)"Game Over";
     u8* STR_GAMEOVER_NEWRECORD        = (u8*)"New Record";
-    u8* STR_GAMEOVER_HSCORE           = (u8*)"Max  :";
-    u8* STR_GAMEOVER_SCORE            = (u8*)"Score:";
+    u8* STR_GAMEOVER_HSCORE           = (u8*)"Max   ";
+    u8* STR_GAMEOVER_SCORE            = (u8*)"Score ";
+    u8* STR_GAMEOVER_MORE             = (u8*)"Press PAUSE/SET for more info.";
+    u8* STR_GAMEOVER_INFO_EXIT        = (u8*)"EXIT : Press any button";
 
-    #define FONT_TOP_INFO             FONT_ASC16
+    // 底部信息栏字体
     #define FONT_BOTTOM_INFO          FONT_ASC12
+    // 其他文字的字体，比如GameOver，按任意键继续
+    #define FONT_OTHER_TEXT           FONT32
+    // 顶部信息栏字体
+    //   注意，程序会从整个画面最下房往上依次计算各区域的高度并绘制框架，而游戏主区域的高度是根据snake map size计算得出的，
+    //        要保证剩余的高度足够显示顶部指定字体
+    #define FONT_TOP_INFO             FONT_ASC16
+    
 #endif
 #ifdef UI_LANG_CN
     u8* STR_PRESS_ANY_KEY             = (u8*)"  按任意键继续..";
-    u8* STR_DEMO_MENU                 = (u8*)"壹速度 貳声音 叁返回";  //壹貳叁代表按钮①②③图标
-    u8* STR_GAME_MENU                 = (u8*)"壹左转 貳声音 叁右转";
+    u8* STR_DEMO_MENU                 = (u8*)"B:Speed P:Sound Other:Home";
+    u8* STR_GAME_MENU                 = (u8*)"P:Sound";
     u8* STR_GAMEOVER_GAMEOVER         = (u8*)"游戏结束";
     u8* STR_GAMEOVER_NEWRECORD        = (u8*)"恭喜,刷新记录!";
     u8* STR_GAMEOVER_HSCORE           = (u8*)"记录:";
     u8* STR_GAMEOVER_SCORE            = (u8*)"得分:";
+    u8* STR_GAMEOVER_MORE             = (u8*)"Press PAUSE/SET for more info";
 
+    // 底部信息栏字体
+    #define FONT_BOTTOM_INFO          FONT_ASC12
+    // 其他文字的字体，比如GameOver，按任意键继续
+    #define FONT_OTHER_TEXT           FONT32
+    // 顶部信息栏字体
     #define FONT_TOP_INFO             FONT_ASC20
-    #define FONT_BOTTOM_INFO          FONT32
+    
 #endif
 
 u8* STR_GAME_INFO                     = (u8*)"Snake & Watch";
 
 // Gameover page
 #define  TITLE_Y         15
-#define  SCROE_Y         60
-#define HSCROE_Y        100
+#define  SCROE_Y         80
+#define HSCROE_Y        120
 
 // define end ------------------------------------------------------------------------------------------
 
@@ -511,7 +526,7 @@ void DISP_drawWelcome(u8 isStartUp){
                 break;
             } 
             showChar(logoX, logoY, FONT_LOGO_IDX_0, &FONT_LOGO70, RGB888toRGB565(r, r, r), COLOR_BG);
-            My_delay_ms(500);
+            My_delay_ms(350);
         }
         // 出现后等待一会儿
         My_delay_ms(500);
@@ -525,7 +540,7 @@ void DISP_drawWelcome(u8 isStartUp){
                 break;
             } 
             showChar(logoX, logoY, FONT_LOGO_IDX_0, &FONT_LOGO70, RGB888toRGB565(r, r, r), COLOR_BG);
-            My_delay_ms(500);
+            My_delay_ms(200);
         }
         // 出现后等待一会儿
         My_delay_ms(200);
@@ -549,7 +564,12 @@ void DISP_flashWelcome(u8 flashOnOff){
     //showChar(logoX, logoY, FONT_LOGO_IDX_0, &FONT_LOGO70, randRGB565(), COLOR_BG);
 
     // 闪烁文字
-    showStringCenter(logoY + FONT_LOGO70.fontHeight + 20, STR_PRESS_ANY_KEY, &FONT32, flashOnOff);
+    #ifdef UI_LANG_EN
+        showStringCenter(logoY + FONT_LOGO70.fontHeight + 20, STR_PRESS_ANY_KEY, &FONT_OTHER_TEXT, flashOnOff);
+    #endif
+    #ifdef UI_LANG_CN
+        showStringCenter(logoY + FONT_LOGO70.fontHeight + 10, STR_PRESS_ANY_KEY, &FONT_OTHER_TEXT, flashOnOff);
+    #endif
 
     // 标题 贪吃蛇 变幻颜色
     // showChar(10, 20, "贪", &FONT_TITLE, COLOR_BG, randRGB565());
@@ -612,9 +632,9 @@ void DISP_updateDemoScore(u16 maxDemoScore, u16 nowDemoScore){
 
 // ##### Demo页 死亡时被调用一次，可做一些显示处理，目前什么都没做
 void DISP_updateDemoGameover(u16 maxDemoScore, u16 avgDemoScore, u16 lastDemoScore){
-    //devShowString(0, SCREEN_H - FONT32.fontHeight, "                ", &FONT_ASC8, COLOR_BG, COLOR_FO);
+    //devShowString(0, SCREEN_H - FONT_OTHER_TEXT.fontHeight, "                ", &FONT_ASC8, COLOR_BG, COLOR_FO);
     //sprintf(buff, "Max:%d Avg:%d", maxDemoScore, avgDemoScore, lastDemoScore);
-    //devShowString(0, SCREEN_H - FONT32.fontHeight, buff, &FONT32, COLOR_BG, COLOR_FO);
+    //devShowString(0, SCREEN_H - FONT_OTHER_TEXT.fontHeight, buff, &FONT_OTHER_TEXT, COLOR_BG, COLOR_FO);
 }
 
 // ##### Demo页 定期被调用 目前没用到
@@ -675,24 +695,27 @@ void DISP_drawGameOver(u16 score, u16 hiScore){
     u8 buff1[16];
     clearScreen();
 
-    //showStringCenter(5, "__________", &FONT32, 0);
+    //showStringCenter(5, "__________", &FONT_OTHER_TEXT, 0);
 
     // 标题，如果超过最高分，显示 刷新记录 否则 显示游戏结束
     if (score > hiScore)
     {
-        showStringCenter(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONT32, 0);
+        showStringCenter(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONT_OTHER_TEXT, 0);
     } else {
-        showStringCenter(TITLE_Y, STR_GAMEOVER_GAMEOVER, &FONT32, 0);
+        showStringCenter(TITLE_Y, STR_GAMEOVER_GAMEOVER, &FONT_OTHER_TEXT, 0);
     }
 
     // 得分
     sprintf(buff1, "%s %d", STR_GAMEOVER_SCORE, score);
-    showStringCenter(SCROE_Y, buff1, &FONT32, 0);
+    showStringCenter(SCROE_Y, buff1, &FONT_OTHER_TEXT, 0);
     // 记录
     sprintf(buff1, "%s %d", STR_GAMEOVER_HSCORE, hiScore);
-    showStringCenter(HSCROE_Y, buff1, &FONT32, 0);
+    showStringCenter(HSCROE_Y, buff1, &FONT_OTHER_TEXT, 0);
 
-    showStringCenter(150, "__________", &FONT32, 0);
+    //showStringCenter(150, "__________", &FONT_OTHER_TEXT, 0);
+
+    // more info
+    showStringCenter(SCREEN_H - FONT_BOTTOM_INFO.fontHeight - 2, STR_GAMEOVER_MORE, &FONT_BOTTOM_INFO, 0);
 }
 
 // ##### GameOver页 定期被调用
@@ -701,12 +724,27 @@ void DISP_flashGameOver(u8 flashOnOff, u8 isNewRecord){
     if (isNewRecord)
     {
         // 刷新记录动态效果
-        showStringCenterColor(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONT32, COLOR_BG, randRGB565(), 0);
+        showStringCenterColor(TITLE_Y, STR_GAMEOVER_NEWRECORD, &FONT_OTHER_TEXT, COLOR_BG, randRGB565(), 0);
     }
 
     // 底部闪烁文字 按任意键继续...
-    showStringCenter(190, STR_PRESS_ANY_KEY, &FONT32, flashOnOff);
+    showStringCenter(190, STR_PRESS_ANY_KEY, &FONT_OTHER_TEXT, flashOnOff);
 }
+
+// ##### 游戏介绍页
+void DISP_drawInfo(){
+    clearScreen();
+    devShowString(20, 30, "This is a port of the EmbSnake(https://gitee.com/slipperstree/EmbSnake) that runs on the Nintendo Game & Watch: Super Mario Bros / Zelda. system. You can find more information from following GitHub page.", &FONT_ASC16, COLOR_BG, COLOR_FO);
+    showStringCenterColor(160, "https://github.com/slipperstree/", &FONT_BOTTOM_INFO, COLOR_BG, COLOR_WINLOGO_Y, 0);
+    showStringCenterColor(174, "game-and-watch-snake", &FONT_BOTTOM_INFO, COLOR_BG, COLOR_WINLOGO_Y, 0);
+
+    showStringCenter(SCREEN_H - FONT_BOTTOM_INFO.fontHeight - 2, STR_GAMEOVER_INFO_EXIT, &FONT_BOTTOM_INFO, 0);
+}
+
+// ##### 游戏介绍页 定期被调用
+void DISP_flashInfo(u8 flashOnOff){
+
+}   
 
 // 绘制框架
 void DISP_drawFrame() {
@@ -765,7 +803,7 @@ void DISP_init(void){
     // clockH = clock >> 16;
     // clockL = clock & 0xFFFF;
     // sprintf(buff, "H:%u  L:%u", clockH, clockL);
-    // devShowString(0,0,buff,&FONT32,COLOR_BLACK, COLOR_WHITE);
+    // devShowString(0,0,buff,&FONT_OTHER_TEXT,COLOR_BLACK, COLOR_WHITE);
     // while (1);
     
 }

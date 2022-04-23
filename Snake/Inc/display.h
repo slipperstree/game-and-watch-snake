@@ -27,6 +27,9 @@ void DISP_flashWelcome(u8 flashOnOff);          // 绘制欢迎页闪烁文字
 void DISP_drawGameOver(u16 score, u16 hiScore);                 // 绘制游戏结束页
 void DISP_flashGameOver(u8 flashOnOff, u8 isNewRecord);         // 绘制游戏结束页闪烁文字
 
+void DISP_drawInfo();                 // 绘制游戏介绍页
+void DISP_flashInfo(u8 flashOnOff);   // 绘制游戏介绍页闪烁文字
+
 void DISP_drawDemo(u8 soundOnOff);              // 绘制Demo页
 void DISP_updateDemoScore(u16, u16);            // 更新Demo页(运行中)
 void DISP_updateDemoGameover(u16, u16, u16);    // 更新Demo页(死亡后)

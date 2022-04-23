@@ -28,6 +28,7 @@ u16 lastDemoSpeed;
 #define MODE_WELCOME_DEMO 1
 #define MODE_GAME 2
 #define MODE_GAMEOVER 3
+#define MODE_INFO 4
 
 u8 nowMode;
 u16 maxDemoScore, totalDemoScore, totalDemoCnt, avgDemoScore, lastDemoScore;
@@ -170,6 +171,11 @@ void CTL_run(){
                 DISP_flashGameOver(flashOnOff, lastGameScore > oldSaveDataHScore ? 1 : 0);
             }
             break;
+        case MODE_INFO:
+            if (flashFlag == 1) {
+                DISP_flashInfo(flashOnOff);
+            }
+            break;
         default:
             break;
     }
@@ -232,10 +238,19 @@ void doBtnCommon(u8 btnNo, u8 event_id){
                     setDemoSpeed(SPEED_DEMO_L);
                 }
                 break;
-            case KEY_PAUSE:
-                // Demo-按键SELECT=切换声音
-                switchSound();
+            case KEY_GAME:
+                devEnterGamePage();
+                // 进入游戏画面
+                nowMode = MODE_GAME;
+                // 绘制游戏画面
+                DISP_drawGame(gSetting.soundOnOff);
+                // SNAKE_restart之前一定要先绘制游戏画面!! 保证框架的位置被正确设置
+                SNAKE_restart();
                 break;
+            // case KEY_PAUSE:
+            //     // Demo-按键SELECT=切换声音
+            //     switchSound();
+            //    break;
             default:
                 // Demo-其他按键=返回标题画面
                 goPageWelcome(DISP_NO);
@@ -265,9 +280,18 @@ void doBtnCommon(u8 btnNo, u8 event_id){
                 ttWalk = 0;
             }
 
-            if (btnNo == KEY_PAUSE) {
-                // 切换声音
-                switchSound();
+            // if (btnNo == KEY_PAUSE) {
+            //     // 切换声音
+            //     switchSound();
+            // }
+
+            if (btnNo == KEY_TIME) {
+                // 进入Demo
+                devEnterDemoPage();
+                nowMode = MODE_WELCOME_DEMO;
+                // 绘制Demo画面
+                DISP_drawDemo(gSetting.soundOnOff);
+                SNAKE_restart();
             }
             break;
         // 按键按被按住不放（连发）
@@ -288,12 +312,32 @@ void doBtnCommon(u8 btnNo, u8 event_id){
         break;
     // GameOver页 -----------------------------------
     case MODE_GAMEOVER:
-        // GAMEOVER画面按任意键回到标题画面
         switch (event_id)
         {
         // 按键按下
         case KEY_EVENT_DOWN:
-            // 按任意键回到标题画面(不判断是哪个按键)
+            if (btnNo == KEY_PAUSE) {
+                // 进入介绍页
+                DISP_drawInfo();
+                nowMode = MODE_INFO;
+            } else {
+                // 其他键回到标题画面
+                goPageWelcome(DISP_NO);
+            }
+            
+            break;
+        default:
+            break;
+        }
+        
+        break;
+    // 介绍页 -----------------------------------
+    case MODE_INFO:
+        // 按任意键回到标题画面
+        switch (event_id)
+        {
+        // 按键按下
+        case KEY_EVENT_DOWN:
             goPageWelcome(DISP_NO);
             break;
         default:

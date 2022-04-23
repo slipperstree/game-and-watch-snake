@@ -37,3 +37,8 @@ u16 My_real_rand(){
 
 	return (u16)my_rand();
 }
+
+u16 extRealRand4EmbSnake(){
+
+	return (u16)my_rand();
+}
