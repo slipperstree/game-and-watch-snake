@@ -36,7 +36,7 @@
         #define KEY_UP_VALUE   0
 
         // ---------- 按键个数 ----------
-        #define KEY_CNT  9
+        #define KEY_CNT  10
 
         // ---------- 按键 IO口定义 ----------
         // BTNn的名字不要修改，预留了最多八个按键，不需要的无视即可
@@ -49,6 +49,7 @@
         #define BTN7   (buttons & B_GAME)?KEY_DOWN_VALUE:KEY_UP_VALUE
         #define BTN8   (buttons & B_TIME)?KEY_DOWN_VALUE:KEY_UP_VALUE
         #define BTN9   (buttons & B_PAUSE)?KEY_DOWN_VALUE:KEY_UP_VALUE
+        #define BTN10  (buttons & B_POWER)?KEY_DOWN_VALUE:KEY_UP_VALUE
 
     // ******* 3-根据需要适当修改下列用于判断单击，双击等各种按键动作判定的时间长短 ************
     // *******   并非以ms为单位，请根据实际速度调整到合适的数值） **************************

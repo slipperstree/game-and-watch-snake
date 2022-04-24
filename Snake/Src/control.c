@@ -389,6 +389,10 @@ void eventKey9(u8 event_id){
     doBtnCommon(KEY_PAUSE, event_id);
 }
 
+void eventKey10(u8 event_id){
+    doBtnCommon(KEY_POWER, event_id);
+}
+
 void eventSnake(){
     switch (SnakeEventId)
     {
@@ -632,7 +636,7 @@ void CTL_init() {
 
     DISP_init();
     devSndInit();
-    KEY_init(eventKey1, eventKey2, eventKey3, eventKey4, eventKey5, eventKey6, eventKey7, eventKey8, eventKey9);
+    KEY_init(eventKey1, eventKey2, eventKey3, eventKey4, eventKey5, eventKey6, eventKey7, eventKey8, eventKey9, eventKey10);
     SNAKE_init(eventSnake);
     
     #if ISDEBUG

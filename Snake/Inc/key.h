@@ -52,6 +52,7 @@
 #define KEY_GAME 7
 #define KEY_TIME 8
 #define KEY_PAUSE 9
+#define KEY_POWER 10
 
 
 
@@ -76,7 +77,8 @@ void KEY_init(
     pBtnEventFunc btn6Func,
     pBtnEventFunc btn7Func,
     pBtnEventFunc btn8Func,
-    pBtnEventFunc btn9Func
+    pBtnEventFunc btn9Func,
+    pBtnEventFunc btn10Func
     );
 
 // 主循环里调用该函数
