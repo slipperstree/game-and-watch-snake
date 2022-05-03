@@ -389,8 +389,27 @@ void eventKey9(u8 event_id){
     doBtnCommon(KEY_PAUSE, event_id);
 }
 
-void eventKey10(u8 event_id){
-    doBtnCommon(KEY_POWER, event_id);
+void powerKey(u8 event_id){
+    if (event_id == KEY_EVENT_DOWN)
+    {
+        // EnterDeepSleep
+        // Stop SAI DMA (audio)
+        //HAL_SAI_DMAStop(&hsai_BlockA1);
+
+        // Enable wakup by PIN1, the power button£¨should disabe it in main() for as an input button£©
+        HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1_LOW);
+
+        lcd_backlight_off();
+
+        HAL_PWR_EnterSTANDBYMode();
+
+        // Execution stops here, this function will not return
+        while(1) {
+            // If we for some reason survive until here, let's just reboot
+            HAL_NVIC_SystemReset();
+        }
+    }
+
 }
 
 void eventSnake(){
@@ -636,7 +655,7 @@ void CTL_init() {
 
     DISP_init();
     devSndInit();
-    KEY_init(eventKey1, eventKey2, eventKey3, eventKey4, eventKey5, eventKey6, eventKey7, eventKey8, eventKey9, eventKey10);
+    KEY_init(eventKey1, eventKey2, eventKey3, eventKey4, eventKey5, eventKey6, eventKey7, eventKey8, eventKey9, powerKey);
     SNAKE_init(eventSnake);
     
     #if ISDEBUG
