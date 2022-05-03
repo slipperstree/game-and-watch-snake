@@ -14,6 +14,7 @@ This game contains the following pages.
 - Demo mode (which can play game it self just like G&W mario or zelda TIME MODE does)
 - Game mode (which you can play by yourself)
 - Game over page (Hiscore cannot be saved in flash by now)
+- Enter sleep mode by press power button. (not save state)
 - etc.
 
 ## Controls
@@ -31,9 +32,9 @@ This game contains the following pages.
 ## Tasks
 - Some simple sound
 - Save hi-score
-- Sleep when Power button pushed
 - Screen bright
 - Show a DigitClock at demo mode (snake will eat digit for update time)
+- [Done]Sleep when Power button pushed
 
 ## Thanks
 - This project is based on [game-and-watch-base](https://github.com/ghidraninja/game-and-watch-base).
