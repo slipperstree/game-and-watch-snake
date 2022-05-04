@@ -81,7 +81,7 @@ Snake/Src/embSnakeDevice.c
 
 # ASM sources
 ASM_SOURCES =  \
-startup_stm32h7b0xx.s
+Core/startup_stm32h7b0xx.s
 
 
 #######################################
