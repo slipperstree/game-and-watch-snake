@@ -1,12 +1,16 @@
 # Snake game for Nintendo Game &amp; Watch
 This is a port of the [EmbSnake](https://gitee.com/slipperstree/EmbSnake) that runs on the Nintendo Game &amp; Watch: Super Mario Bros / Zelda game.
 
-## Build
+## Before build
 You need backup your G&W first. See [game-and-watch-backup](https://github.com/ghidraninja/game-and-watch-backup)
-- You need STM32 Drivers in the `game-and-watch-snake` directory for the `Makefile`. 
-You can simply create a symbolic link to [game-and-watch-retro-go/Drivers](https://github.com/kbeckmann/game-and-watch-retro-go) using the following command: `ln -s ../some-where/game-and-watch-retro-go/Drivers Drivers`
-- Build and flash by `make flash`
-- Or you can just download [pre builded ELF file](/Release/gw_snake.elf) for test.
+## 1. Build / Flash in command line
+Build and flash by `make flash` in `game-and-watch-snake` directory
+
+## 2. Build / Flash / Debug with STM32CubeIDE
+Import this project into your STM32CubeIDE workspace by `Import -> General -> Existing Projects into Workspace` and build / debug it.
+
+## 3. Just need the game rom
+You can just download [pre builded ELF file](/Release/gw_snake.elf) for test.
 
 ## Features
 This game contains the following pages.
@@ -14,7 +18,6 @@ This game contains the following pages.
 - Demo mode (which can play game it self just like G&W mario or zelda TIME MODE does)
 - Game mode (which you can play by yourself)
 - Game over page (Hiscore cannot be saved in flash by now)
-- Enter sleep mode by press power button. (not save state)
 - etc.
 
 ## Controls
@@ -22,6 +25,7 @@ This game contains the following pages.
 - Wait a while at Home page will start demo.
 - Swich Game / Demo mode by press GAME / TIME button.
 - Other operation will show at the bottom of screen.
+- Power off (sleep) by press power button.
 
 ## Pictures
 - ![Home](/Pics/Home.jpg)
@@ -38,4 +42,5 @@ This game contains the following pages.
 
 ## Thanks
 - This project is based on [game-and-watch-base](https://github.com/ghidraninja/game-and-watch-base).
-- This project use Drivers by [game-and-watch-retro-go](https://github.com/kbeckmann/game-and-watch-retro-go) downloaded.
+- This project use some code (power down etc.) from [game-and-watch-retro-go](https://github.com/kbeckmann/game-and-watch-retro-go).
+- Thanks _tim_ in [discord](https://discord.gg/Zks9wsscK3) for many helps. He also create a page which lists a lot of fun thing with G&W, you can take a look if you like, [Here is it](https://www.schuerewegen.tk/gnw/)
