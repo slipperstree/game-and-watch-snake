@@ -81,7 +81,7 @@ Snake/Src/embSnakeDevice.c
 
 # ASM sources
 ASM_SOURCES =  \
-Core/startup_stm32h7b0xx.s
+Core/Startup/startup_stm32h7b0xx.s
 
 
 #######################################
@@ -160,7 +160,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = STM32H7B0VBTx_FLASH.ld
+LDSCRIPT = STM32H7B0VBTx_RAM.ld
 
 # libraries
 LIBS = -lc -lm -lnosys 
