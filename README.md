@@ -10,7 +10,9 @@ Build and flash by `make flash` in `game-and-watch-snake` directory
 Import this project into your STM32CubeIDE workspace by `Import -> General -> Existing Projects into Workspace` and build / debug it.
 
 ## 3. Just need the game rom
-You can just download [pre builded ELF file](/Release/gw_snake.elf) for test.
+You can just download Pre builded elf file for test.
+- [ROM .elf](./Release/ROM/gw_snake.elf)
+- [RAM .elf](./Release/RAM/gw_snake.elf)
 
 ## Features
 This game contains the following pages.
@@ -28,10 +30,10 @@ This game contains the following pages.
 - Power off (sleep) by press power button.
 
 ## Pictures
-- ![Home](/Pics/Home.jpg)
-- ![Demo](/Pics/Demo.jpg)
-- ![Game](/Pics/Game.jpg)
-- ![GameOver](/Pics/GameOver.jpg)
+- ![Home](./Pics/Home.jpg)
+- ![Demo](./Pics/Demo.jpg)
+- ![Game](./Pics/Game.jpg)
+- ![GameOver](./Pics/GameOver.jpg)
 
 ## Tasks
 - Some simple sound

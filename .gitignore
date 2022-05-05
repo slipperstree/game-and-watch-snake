@@ -1,5 +1,5 @@
 build
 Debug*
-Release*
+Release*(*
 .mxproject
 .DS_Store
